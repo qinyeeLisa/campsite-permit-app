@@ -77,26 +77,23 @@ class _CamperHomeScreenState extends State<CamperHomeScreen> {
                           columns: const [
                             DataColumn(label: Text('Campsite Name')),
                             DataColumn(label: Text('Location')),
-                            DataColumn(label: Text('Actions')),
                           ],
                           rows: filteredCampsites.map((campsite) {
                             return DataRow(cells: [
                               DataCell(Text(campsite['name']!)),
                               DataCell(Text(campsite['location']!)),
-                              DataCell(
-                                ElevatedButton(
-                                  onPressed: () {
-                                    // Navigate to the apply permit screen
-                                    Navigator.pushNamed(
-                                        context, '/camper/apply_permit');
-                                  },
-                                  child: Text('Apply for Permit'),
-                                ),
-                              ),
                             ]);
                           }).toList(),
                         ),
                       )),
+                  SizedBox(height: 20),
+                  ElevatedButton(
+                    onPressed: () {
+                      // Navigate to the apply permit screen
+                      Navigator.pushNamed(context, '/camper/apply_permit');
+                    },
+                    child: Text('Apply for Campsite Permit'),
+                  ),
                   SizedBox(height: 20),
                   ElevatedButton(
                     onPressed: () {
@@ -105,7 +102,7 @@ class _CamperHomeScreenState extends State<CamperHomeScreen> {
                     },
                     child: Text('Enquire Permit Status'),
                   ),
-                  SizedBox(height: 10),
+                  SizedBox(height: 20),
                   ElevatedButton(
                     onPressed: () {
                       // Navigate to the apply permit screen
