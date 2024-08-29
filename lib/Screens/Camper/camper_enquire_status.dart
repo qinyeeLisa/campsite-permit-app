@@ -13,7 +13,7 @@ class _CamperEnquireStatusScreenState extends State<CamperEnquireStatusScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text("CamperEnquireStatusScreen"),
+        title: Text("Enquiry Status"),
       ),
     );
   }

@@ -13,7 +13,7 @@ class _CamperSubmitReviewScreenState extends State<CamperSubmitReviewScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text("CamperSubmitReviewScreen"),
+        title: Text("Submit Review"),
       ),
     );
   }
