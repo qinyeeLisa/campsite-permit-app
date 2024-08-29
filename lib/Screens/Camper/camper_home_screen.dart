@@ -8,7 +8,7 @@ class CamperHomeScreen extends StatefulWidget {
 class _CamperHomeScreenState extends State<CamperHomeScreen> {
   final TextEditingController _searchController = TextEditingController();
   List<Map<String, String>> campsites = [
-    {'name': 'Campsite A', 'location': 'Mountain'},
+    {'name': 'Campsite A', 'location': 'Hill Side'},
     {'name': 'Campsite B', 'location': 'Lake'},
     {'name': 'Campsite C', 'location': 'Forest'},
     // Add more campsites as needed
