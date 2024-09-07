@@ -1,5 +1,6 @@
 // Suggested code may be subject to a license. Learn more: ~LicenseLog:2390663160.
 import 'package:camplified/Screens/Login/login_screen.dart';
+import 'package:camplified/Screens/login_signup.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_svg/flutter_svg.dart';
@@ -62,7 +63,7 @@ class WelcomeScreen extends StatelessWidget {
                         Navigator.push(
                             context,
                             MaterialPageRoute(
-                                builder: (context) => LoginScreen()));
+                                builder: (context) => LoginSignupScreen()));
                       },
                       style: ElevatedButton.styleFrom(
                         foregroundColor: Colors.white,
