@@ -1,4 +1,5 @@
 // Suggested code may be subject to a license. Learn more: ~LicenseLog:2390663160.
+import 'package:camplified/Screens/Camper/camper_home_screen.dart';
 import 'package:camplified/Screens/Login/login_screen.dart';
 import 'package:camplified/Screens/login_signup.dart';
 import 'package:flutter/material.dart';
@@ -65,8 +66,9 @@ class WelcomeScreen extends StatelessWidget {
                         Navigator.push(
                             context,
                             MaterialPageRoute(
-                                builder: (context) =>
-                                    const LoginSignupScreen()));
+                                builder: (context) => const LoginSignupScreen()
+                                //const LoginSignupScreen()
+                                ));
                       },
                       style: ElevatedButton.styleFrom(
                         foregroundColor: Colors.white,
