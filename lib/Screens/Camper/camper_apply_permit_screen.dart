@@ -81,6 +81,9 @@ class _CamperApplyPermitScreenState extends State<CamperApplyPermitScreen> {
           content: Text('Permit application submitted successfully!')),
     );
 
+    // Navigate back to the previous screen (CamperHomeScreen)
+    Navigator.pop(context);
+
     // Implement further submission logic such as sending data to a server
   }
 

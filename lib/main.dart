@@ -1,8 +1,8 @@
 import 'package:camplified/Screens/Admin/admin_home_screen.dart';
 import 'package:camplified/Screens/Camper/camper_apply_permit_screen.dart';
 import 'package:camplified/Screens/Camper/camper_home_screen.dart';
-import 'package:camplified/Screens/Camper/camper_enquire_status.dart';
-import 'package:camplified/Screens/Camper/camper_submit_review.dart';
+import 'package:camplified/Screens/Camper/camper_enquire_status_screen.dart';
+import 'package:camplified/Screens/Camper/camper_submit_review_screen.dart';
 import 'package:camplified/Screens/CampsiteOwner/owner_home_screen.dart';
 import 'package:camplified/Screens/Welcome/welcome.dart';
 import 'package:camplified/Screens/login_signup.dart';

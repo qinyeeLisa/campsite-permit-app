@@ -26,6 +26,8 @@ class _CamperSubmitReviewScreenState extends State<CamperSubmitReviewScreen> {
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(content: Text('Feedback Submitted!')),
       );
+      // Navigate back to the previous screen (CamperHomeScreen)
+      Navigator.pop(context);
     }
   }
 
