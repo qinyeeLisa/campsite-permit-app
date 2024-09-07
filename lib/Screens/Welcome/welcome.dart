@@ -7,6 +7,8 @@ import 'package:flutter_svg/flutter_svg.dart';
 import '/constants.dart';
 
 class WelcomeScreen extends StatelessWidget {
+  const WelcomeScreen({super.key});
+
   @override
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
@@ -15,7 +17,7 @@ class WelcomeScreen extends StatelessWidget {
       value: SystemUiOverlayStyle.light,
       child: Scaffold(
         backgroundColor: kBackgroundColor,
-        body: Container(
+        body: SizedBox(
           width: double.infinity,
           height: size.height,
           child: Stack(
@@ -32,8 +34,8 @@ class WelcomeScreen extends StatelessWidget {
                   ),
                   Container(
                     width: size.width,
-                    padding: EdgeInsets.only(top: 40, bottom: 10),
-                    child: Text(
+                    padding: const EdgeInsets.only(top: 40, bottom: 10),
+                    child: const Text(
                       'Camplified',
                       textAlign: TextAlign.center,
                       style: TextStyle(
@@ -44,8 +46,8 @@ class WelcomeScreen extends StatelessWidget {
                   ),
                   Container(
                     width: size.width,
-                    padding: EdgeInsets.only(left: 40, right: 40),
-                    child: Text(
+                    padding: const EdgeInsets.only(left: 40, right: 40),
+                    child: const Text(
                       'Connect with people and plan your next escape to explore this beautiful World!',
                       textAlign: TextAlign.center,
                       style: TextStyle(
@@ -55,7 +57,7 @@ class WelcomeScreen extends StatelessWidget {
                     ),
                   ),
                   SizedBox(height: size.height * 0.05),
-                  Container(
+                  SizedBox(
                     width: size.width * 0.5,
                     height: 60.0,
                     child: ElevatedButton(
@@ -63,7 +65,8 @@ class WelcomeScreen extends StatelessWidget {
                         Navigator.push(
                             context,
                             MaterialPageRoute(
-                                builder: (context) => LoginSignupScreen()));
+                                builder: (context) =>
+                                    const LoginSignupScreen()));
                       },
                       style: ElevatedButton.styleFrom(
                         foregroundColor: Colors.white,
@@ -85,14 +88,14 @@ class WelcomeScreen extends StatelessWidget {
                             BoxShadow(
                               color: kPrimaryColor.withOpacity(0.30),
                               blurRadius: 20,
-                              offset: Offset(0, 8),
+                              offset: const Offset(0, 8),
                             ),
                           ],
                         ),
                         child: Container(
                           alignment: Alignment.center,
                           padding: const EdgeInsets.all(0),
-                          child: Text(
+                          child: const Text(
                             "LET'S GO",
                             style: TextStyle(
                               fontWeight: FontWeight.bold,

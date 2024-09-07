@@ -62,21 +62,23 @@ class _CamperApplyPermitScreenState extends State<CamperApplyPermitScreen> {
     if (_selectedLocation == 'No Selection' ||
         _selectedArea == 'No Selection') {
       ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text('Please select a location and an area.')),
+        const SnackBar(content: Text('Please select a location and an area.')),
       );
       return;
     }
 
     if (_startDate == null || _endDate == null) {
       ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text('Please select both start and end dates.')),
+        const SnackBar(
+            content: Text('Please select both start and end dates.')),
       );
       return;
     }
 
     // Example submission logic
     ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(content: Text('Permit application submitted successfully!')),
+      const SnackBar(
+          content: Text('Permit application submitted successfully!')),
     );
 
     // Implement further submission logic such as sending data to a server
@@ -86,7 +88,7 @@ class _CamperApplyPermitScreenState extends State<CamperApplyPermitScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text("Permit Application"),
+        title: const Text("Permit Application"),
       ),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
@@ -95,7 +97,7 @@ class _CamperApplyPermitScreenState extends State<CamperApplyPermitScreen> {
           children: <Widget>[
             // Location Dropdown
             DropdownButtonFormField<String>(
-              decoration: InputDecoration(
+              decoration: const InputDecoration(
                 labelText: 'Location',
                 border: OutlineInputBorder(),
               ),
@@ -112,11 +114,11 @@ class _CamperApplyPermitScreenState extends State<CamperApplyPermitScreen> {
                 });
               },
             ),
-            SizedBox(height: 20),
+            const SizedBox(height: 20),
 
             // Area Dropdown
             DropdownButtonFormField<String>(
-              decoration: InputDecoration(
+              decoration: const InputDecoration(
                 labelText: 'Campsite Area',
                 border: OutlineInputBorder(),
               ),
@@ -133,16 +135,16 @@ class _CamperApplyPermitScreenState extends State<CamperApplyPermitScreen> {
                 });
               },
             ),
-            SizedBox(height: 20),
+            const SizedBox(height: 20),
 
             // Start Date Picker
             TextFormField(
               readOnly: true,
               decoration: InputDecoration(
                 labelText: 'Start Date',
-                border: OutlineInputBorder(),
+                border: const OutlineInputBorder(),
                 suffixIcon: IconButton(
-                  icon: Icon(Icons.calendar_today),
+                  icon: const Icon(Icons.calendar_today),
                   onPressed: () => _selectDate(context, true),
                 ),
               ),
@@ -150,16 +152,16 @@ class _CamperApplyPermitScreenState extends State<CamperApplyPermitScreen> {
                 text: _startDate != null ? _dateFormat.format(_startDate!) : '',
               ),
             ),
-            SizedBox(height: 20),
+            const SizedBox(height: 20),
 
             // End Date Picker
             TextFormField(
               readOnly: true,
               decoration: InputDecoration(
                 labelText: 'End Date',
-                border: OutlineInputBorder(),
+                border: const OutlineInputBorder(),
                 suffixIcon: IconButton(
-                  icon: Icon(Icons.calendar_today),
+                  icon: const Icon(Icons.calendar_today),
                   onPressed: () => _selectDate(context, false),
                 ),
               ),
@@ -167,13 +169,13 @@ class _CamperApplyPermitScreenState extends State<CamperApplyPermitScreen> {
                 text: _endDate != null ? _dateFormat.format(_endDate!) : '',
               ),
             ),
-            SizedBox(height: 20),
+            const SizedBox(height: 20),
 
             // Submit Button
             Center(
               child: ElevatedButton(
                 onPressed: _submitPermitApplication,
-                child: Text('Submit'),
+                child: const Text('Submit'),
               ),
             ),
           ],

@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 
 class CamperHomeScreen extends StatefulWidget {
+  const CamperHomeScreen({super.key});
+
   @override
   _CamperHomeScreenState createState() => _CamperHomeScreenState();
 }
@@ -50,22 +52,22 @@ class _CamperHomeScreenState extends State<CamperHomeScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Camper Dashboard'),
+        title: const Text('Camper Dashboard'),
       ),
       body: Padding(
-        padding: EdgeInsets.all(16.0),
+        padding: const EdgeInsets.all(16.0),
         child: Column(
           children: <Widget>[
             TextField(
               controller: _searchController,
-              decoration: InputDecoration(
+              decoration: const InputDecoration(
                 labelText: 'Search Campsites',
                 prefixIcon: Icon(Icons.search),
                 border: OutlineInputBorder(),
               ),
               onChanged: _filterCampsites,
             ),
-            SizedBox(height: 20),
+            const SizedBox(height: 20),
             Expanded(
               child: ListView(
                 children: [
@@ -86,29 +88,29 @@ class _CamperHomeScreenState extends State<CamperHomeScreen> {
                           }).toList(),
                         ),
                       )),
-                  SizedBox(height: 20),
+                  const SizedBox(height: 20),
                   ElevatedButton(
                     onPressed: () {
                       // Navigate to the apply permit screen
                       Navigator.pushNamed(context, '/camper/apply_permit');
                     },
-                    child: Text('Apply for Campsite Permit'),
+                    child: const Text('Apply for Campsite Permit'),
                   ),
-                  SizedBox(height: 20),
+                  const SizedBox(height: 20),
                   ElevatedButton(
                     onPressed: () {
                       // Navigate to the permit status enquiry screen
                       Navigator.pushNamed(context, '/camper/enquire_status');
                     },
-                    child: Text('Enquire Permit Status'),
+                    child: const Text('Enquire Permit Status'),
                   ),
-                  SizedBox(height: 20),
+                  const SizedBox(height: 20),
                   ElevatedButton(
                     onPressed: () {
                       // Navigate to the apply permit screen
                       Navigator.pushNamed(context, '/camper/submit_review');
                     },
-                    child: Text('Submit Review'),
+                    child: const Text('Submit Review'),
                   ),
                 ],
               ),

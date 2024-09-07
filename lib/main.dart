@@ -11,10 +11,12 @@ import 'package:google_fonts/google_fonts.dart';
 import 'constants.dart';
 
 void main() {
-  runApp(MyApp());
+  runApp(const MyApp());
 }
 
 class MyApp extends StatelessWidget {
+  const MyApp({super.key});
+
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
@@ -28,15 +30,17 @@ class MyApp extends StatelessWidget {
           primarySwatch: Colors.blue,
           visualDensity: VisualDensity.adaptivePlatformDensity,
         ),
-        home: LoginSignupScreen(),
+        home: const LoginSignupScreen(),
         routes: {
-          '/auth': (context) => LoginSignupScreen(),
-          '/camper/home': (context) => CamperHomeScreen(),
-          '/camper/apply_permit': (context) => CamperApplyPermitScreen(),
-          '/camper/enquire_status': (context) => CamperEnquireStatusScreen(),
-          '/camper/submit_review': (context) => CamperSubmitReviewScreen(),
-          '/campsite_owner/home': (context) => OwnerHomeScreen(),
-          '/admin/home': (context) => AdminHomeScreen(),
+          '/auth': (context) => const LoginSignupScreen(),
+          '/camper/home': (context) => const CamperHomeScreen(),
+          '/camper/apply_permit': (context) => const CamperApplyPermitScreen(),
+          '/camper/enquire_status': (context) =>
+              const CamperEnquireStatusScreen(),
+          '/camper/submit_review': (context) =>
+              const CamperSubmitReviewScreen(),
+          '/campsite_owner/home': (context) => const OwnerHomeScreen(),
+          '/admin/home': (context) => const AdminHomeScreen(),
         });
   }
 }

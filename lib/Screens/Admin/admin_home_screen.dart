@@ -1,11 +1,13 @@
 import 'package:flutter/material.dart';
 
 class AdminHomeScreen extends StatelessWidget {
+  const AdminHomeScreen({super.key});
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Admin Home'),
+        title: const Text('Admin Home'),
       ),
       body: Center(
         child: Column(
@@ -16,15 +18,15 @@ class AdminHomeScreen extends StatelessWidget {
                 // Navigate to the screen where the admin can manage users
                 Navigator.pushNamed(context, '/admin/manage_users');
               },
-              child: Text('Manage Users'),
+              child: const Text('Manage Users'),
             ),
-            SizedBox(height: 20), // Add some spacing between buttons
+            const SizedBox(height: 20), // Add some spacing between buttons
             ElevatedButton(
               onPressed: () {
                 // Navigate to the screen where the admin can oversee permit applications
                 Navigator.pushNamed(context, '/admin/oversee_permits');
               },
-              child: Text('Oversee Permit Applications'),
+              child: const Text('Oversee Permit Applications'),
             ),
           ],
         ),
