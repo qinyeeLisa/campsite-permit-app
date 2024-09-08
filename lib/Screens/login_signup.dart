@@ -1,7 +1,7 @@
 import 'package:amplify_authenticator/amplify_authenticator.dart';
 import 'package:amplify_flutter/amplify_flutter.dart';
 import 'package:amplify_auth_cognito/amplify_auth_cognito.dart';
-import 'package:camplified/amplify_configuration.dart';
+import 'package:camplified/amplifyconfiguration.dart';
 import 'package:flutter/material.dart';
 
 void main() {
@@ -22,6 +22,7 @@ class _LoginSignupScreenState extends State<LoginSignupScreen> {
   @override
   void initState() {
     super.initState();
+    WidgetsFlutterBinding.ensureInitialized();
     _configureAmplify();
   }
 
@@ -30,7 +31,6 @@ class _LoginSignupScreenState extends State<LoginSignupScreen> {
       final auth = AmplifyAuthCognito();
       await Amplify.addPlugin(auth);
       await Amplify.configure(amplifyconfig);
-      fetchAuthSession();
       safePrint('Successfully configured');
     } on Exception catch (e) {
       safePrint('An error occurred configuring Amplify: $e');
@@ -60,14 +60,13 @@ class _LoginSignupScreenState extends State<LoginSignupScreen> {
         builder: Authenticator.builder(),
         home: Scaffold(
           body: Center(
-            child: isLoading
-                ? const CircularProgressIndicator() // Show a loading spinner while waiting
-                : Column(
+            child: Column(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-                      isSignIn
-                          ? const Text('User is signed in')
-                          : const Text('User is not signed in'),
+                        const Padding(
+                          padding: EdgeInsets.all(8.0),
+                          child: Text('User is signed in'),
+                        ),
                       const SignOutButton(),
                     ],
                   ),

@@ -1,0 +1,21 @@
+{
+  "dev": {
+    "awscloudformation": {
+      "AuthRoleName": "amplify-campsitepermitapp-dev-43e0d-authRole",
+      "UnauthRoleArn": "arn:aws:iam::156041402477:role/amplify-campsitepermitapp-dev-43e0d-unauthRole",
+      "AuthRoleArn": "arn:aws:iam::156041402477:role/amplify-campsitepermitapp-dev-43e0d-authRole",
+      "Region": "ap-southeast-1",
+      "DeploymentBucketName": "amplify-campsitepermitapp-dev-43e0d-deployment",
+      "UnauthRoleName": "amplify-campsitepermitapp-dev-43e0d-unauthRole",
+      "StackName": "amplify-campsitepermitapp-dev-43e0d",
+      "StackId": "arn:aws:cloudformation:ap-southeast-1:156041402477:stack/amplify-campsitepermitapp-dev-43e0d/d9d6b700-6dcf-11ef-8e3d-06d05e6ee4eb",
+      "AmplifyAppId": "d3h89xwa9s07bw"
+    },
+    "categories": {
+      "auth": {
+        "campsitepermitapp85b14ed9": {},
+        "userPoolGroups": {}
+      }
+    }
+  }
+}
