@@ -30,7 +30,7 @@ class MyApp extends StatelessWidget {
           primarySwatch: Colors.blue,
           visualDensity: VisualDensity.adaptivePlatformDensity,
         ),
-        home: const LoginSignupScreen(),
+        home: const CamperHomeScreen(), //LoginSignupScreen(),
         routes: {
           '/auth': (context) => const LoginSignupScreen(),
           '/camper/home': (context) => const CamperHomeScreen(),
