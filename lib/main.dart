@@ -2,6 +2,7 @@ import 'package:camplified/Screens/Admin/admin_home_screen.dart';
 import 'package:camplified/Screens/Camper/camper_apply_permit_screen.dart';
 import 'package:camplified/Screens/Camper/camper_home_screen.dart';
 import 'package:camplified/Screens/Camper/camper_enquire_status_screen.dart';
+import 'package:camplified/Screens/Camper/camper_search_campsites_screen.dart';
 import 'package:camplified/Screens/Camper/camper_submit_review_screen.dart';
 import 'package:camplified/Screens/CampsiteOwner/owner_home_screen.dart';
 import 'package:camplified/Screens/Welcome/welcome.dart';
@@ -39,6 +40,8 @@ class MyApp extends StatelessWidget {
               const CamperEnquireStatusScreen(),
           '/camper/submit_review': (context) =>
               const CamperSubmitReviewScreen(),
+          '/camper/search_campsites': (context) =>
+              const CamperSearchCampsitesScreen(),
           '/campsite_owner/home': (context) => const OwnerHomeScreen(),
           '/admin/home': (context) => const AdminHomeScreen(),
         });
