@@ -12,7 +12,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
   String _email = '';
   String _password = '';
   final String _confirmPassword = '';
-  String _selectedRole = 'camper';
+  String _selectedRole = 'Camper';
   
   bool _isPasswordVisible = false;
   bool _isConfirmPasswordVisible = false;
