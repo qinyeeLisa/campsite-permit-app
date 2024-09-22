@@ -95,16 +95,42 @@ class _OwnerHomeScreenState extends State<OwnerHomeScreen> {
     }
   }
 
-  // Reject permit application locally
-  void _rejectApplication(String permitId) {
-    setState(() {
-      permitApplications.firstWhere(
-              (application) => application['permitId'] == permitId)['status'] =
-          'Rejected';
-    });
-    ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(content: Text('Application $permitId rejected')),
-    );
+// Reject permit application
+  Future<void> _rejectApplication(String permitId, String userId) async {
+    final url =
+        'https://eqqd1j4q2j.execute-api.ap-southeast-1.amazonaws.com/dev/approveapi/approve/rejectpermit';
+
+    try {
+      // Create the PermitInfoDto payload
+      final Map<String, dynamic> permitInfo = {
+        'Id': int.parse(permitId),
+        'UserId': int.parse(userId),
+      };
+
+      // Send POST request with the permitInfo as JSON
+      final response = await http.post(
+        Uri.parse(url),
+        headers: {'Content-Type': 'application/json'},
+        body: jsonEncode(permitInfo),
+      );
+
+      if (response.statusCode == 200) {
+        setState(() {
+          permitApplications.firstWhere((application) =>
+              application['permitId'] == permitId)['status'] = 'Rejected';
+        });
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text('Application $permitId rejected')),
+        );
+      } else {
+        throw Exception('Failed to reject application');
+      }
+    } catch (error) {
+      print('Error rejecting application: $error');
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text('Error rejecting application')),
+      );
+    }
   }
 
   @override
@@ -189,7 +215,9 @@ class _OwnerHomeScreenState extends State<OwnerHomeScreen> {
                                 ElevatedButton(
                                   onPressed: application['status'] == 'Pending'
                                       ? () => _rejectApplication(
-                                          application['permitId']!)
+                                            application['permitId']!,
+                                            application['userId']!,
+                                          )
                                       : null,
                                   style: ElevatedButton.styleFrom(
                                     backgroundColor: Colors.red,
