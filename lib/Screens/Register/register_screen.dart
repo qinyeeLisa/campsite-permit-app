@@ -1,3 +1,4 @@
+import 'package:camplified/Screens/Register/Components/social_sign_up.dart';
 import 'package:flutter/material.dart';
 
 class RegisterScreen extends StatefulWidget {
@@ -11,24 +12,44 @@ class _RegisterScreenState extends State<RegisterScreen> {
   final _formKey = GlobalKey<FormState>();
   String _email = '';
   String _password = '';
-  final String _confirmPassword = '';
   String _selectedRole = 'Camper';
   
+  //To control password visibility
   bool _isPasswordVisible = false;
   bool _isConfirmPasswordVisible = false;
+
+  // Initialize Firebase Auth and Firestore
+  // final FirebaseAuth _auth = FirebaseAuth.instance;
+  // final FirebaseFirestore _firestore = FirebaseFirestore.instance;
 
   void _register() {
     if (_formKey.currentState!.validate()) {
       _formKey.currentState!.save();
 
-      // TODO: Implement the actual registration logic with your AuthService
+      try {
+      // Create user with email and password
+      // UserCredential userCredential = await _auth.createUserWithEmailAndPassword(
+      //   email: _email,
+      //   password: _password,
+      // );
+
+      // // Store user role in Firestore
+      // await _firestore.collection('users').doc(userCredential.user?.uid).set({
+      //   'role': _selectedRole,
+      //   'email': _email,
+      // });
 
       ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text('Registering $_email')),
+        SnackBar(content: Text('Registered $_email successfully!')),
       );
 
-      // Navigate to login screen or directly to home screen after registration
+      // Navigate to login or home screen
       Navigator.pushNamed(context, '/login');
+    } catch (e) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text('Registration failed: $e')),
+      );
+    }
     }
   }
 
@@ -152,6 +173,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                   ),
                 ],
               ),
+              SocialSignUp(),
             ],
           ),
         ),
