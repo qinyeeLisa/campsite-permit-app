@@ -5,6 +5,7 @@ class LoginScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    Size size = MediaQuery.of(context).size;
     return Scaffold(
       appBar: AppBar(
         title: const Text('Login'),
@@ -28,6 +29,7 @@ class LoginScreen extends StatelessWidget {
               },
               child: const Text('Login'),
             ),
+            SizedBox(height: size.height * 0.05),
             TextButton(
               onPressed: () {
                 Navigator.pushNamed(context, '/register');
