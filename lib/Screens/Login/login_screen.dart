@@ -1,5 +1,16 @@
 import 'package:flutter/material.dart';
 
+String? validateEmail(String value) {
+  RegExp regex =
+      RegExp(r"^[a-z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]"
+          r"{0,253}[a-z0-9])?(?:\.[a-zA-Z0-9](?:[a-zA-Z0-9-]"
+          r"{0,253}[a-z0-9])?)*$");
+  if (!regex.hasMatch(value) || value == null)
+    return "Please enter a valid email address";
+  else
+    return null;
+}
+
 class LoginScreen extends StatefulWidget {
   const LoginScreen({super.key});
 
@@ -9,6 +20,9 @@ class LoginScreen extends StatefulWidget {
 
 class _LoginScreenState extends State<LoginScreen> {
   bool _isPasswordVisible = false;
+  final _emailController = TextEditingController();
+  final _passwordController = TextEditingController();
+  final _formKey = GlobalKey<FormState>();
 
   @override
   Widget build(BuildContext context) {
@@ -19,52 +33,70 @@ class _LoginScreenState extends State<LoginScreen> {
       ),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
-        child: Column(
-          children: <Widget>[
-            const TextField(
-              decoration: InputDecoration(labelText: 'Email'),
-            ),
-            TextField(
-              obscureText: !_isPasswordVisible,
-              decoration: InputDecoration(
-                labelText: 'Password',
-                suffixIcon: IconButton(
-                  icon: Icon(
-                    _isPasswordVisible ? Icons.visibility : Icons.visibility_off,
+        child: Form(
+          key: _formKey,
+          child: 
+            Column(
+              children: <Widget>[
+                TextFormField(
+                  decoration: InputDecoration(labelText: 'Email'),
+                  controller: _emailController,
+                  validator: (value) => validateEmail(value!),
+                ),
+                TextFormField(
+                  obscureText: !_isPasswordVisible,
+                  controller: _passwordController,
+                  validator: (value) {
+                    if (value == null || value.isEmpty) {
+                      return 'Please enter a valid password';
+                    } else if (value.length < 6) {
+                      return 'Password must be at least 6 characters long';
+                    }
+                    return null;
+                  },
+                  decoration: InputDecoration(
+                    labelText: 'Password',
+                    suffixIcon: IconButton(
+                      icon: Icon(
+                        _isPasswordVisible
+                            ? Icons.visibility
+                            : Icons.visibility_off,
+                      ),
+                      onPressed: () {
+                        setState(() {
+                          _isPasswordVisible = !_isPasswordVisible;
+                        });
+                      },
+                    ),
                   ),
-                  onPressed: () {
-                    setState(() {
-                      _isPasswordVisible = !_isPasswordVisible;
-                    });
-                  },
                 ),
-              ),
-            ),
-            const SizedBox(height: 20),
-            ElevatedButton(
-              onPressed: () {
-                // TODO: Implement login logic
-                Navigator.pushNamed(context, '/camper/home');
-              },
-              child: const Text('Login'),
-            ),
-            SizedBox(height: size.height * 0.01),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                const Text(
-                  style: const TextStyle(fontSize: 16),
-                  'Don\'t have an account?',         
-                ),
-                TextButton(
+                const SizedBox(height: 20),
+                ElevatedButton(
                   onPressed: () {
-                    Navigator.pushNamed(context, '/register');
+                    if (_formKey.currentState!.validate()) {
+                      Navigator.pushNamed(context, '/camper/home');
+                    }
                   },
-                  child: const Text('Sign Up'),
+                  child: const Text('Login'),
+                ),
+                SizedBox(height: size.height * 0.01),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    const Text(
+                      style: const TextStyle(fontSize: 16),
+                      'Don\'t have an account?',
+                    ),
+                    TextButton(
+                      onPressed: () {
+                        Navigator.pushNamed(context, '/register');
+                      },
+                      child: const Text('Sign Up'),
+                    ),
+                  ],
                 ),
               ],
             ),
-          ],
         ),
       ),
     );
