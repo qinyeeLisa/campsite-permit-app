@@ -1,6 +1,7 @@
 // Suggested code may be subject to a license. Learn more: ~LicenseLog:2390663160.
 import 'package:camplified/Screens/Camper/camper_home_screen.dart';
 import 'package:camplified/Screens/Login/login_screen.dart';
+import 'package:camplified/Screens/Register/register_screen.dart';
 import 'package:camplified/Screens/login_signup.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -47,7 +48,7 @@ class WelcomeScreen extends StatelessWidget {
                   ),
                   Container(
                     width: size.width,
-                    padding: const EdgeInsets.only(left: 40, right: 40),
+                    padding: const EdgeInsets.symmetric(horizontal: 40),
                     child: const Text(
                       'Connect with people and plan your next escape to explore this beautiful World!',
                       textAlign: TextAlign.center,
@@ -58,59 +59,62 @@ class WelcomeScreen extends StatelessWidget {
                     ),
                   ),
                   SizedBox(height: size.height * 0.05),
-                  SizedBox(
-                    width: size.width * 0.5,
-                    height: 60.0,
-                    child: ElevatedButton(
-                      onPressed: () {
-                        Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                                builder: (context) => const LoginSignupScreen()
-                                //const LoginSignupScreen()
-                                ));
-                      },
-                      style: ElevatedButton.styleFrom(
-                        foregroundColor: Colors.white,
-                        backgroundColor: kPrimaryColor,
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(80.0),
-                        ),
-                        padding: EdgeInsets
-                            .zero, // Removes padding around the button
-                        shadowColor:
-                            kPrimaryColor.withOpacity(0.30), // Shadow color
-                        elevation: 20, // Adjusts shadow blur
-                      ),
-                      child: Ink(
-                        decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(80.0),
-                          color: kPrimaryColor,
-                          boxShadow: [
-                            BoxShadow(
-                              color: kPrimaryColor.withOpacity(0.30),
-                              blurRadius: 20,
-                              offset: const Offset(0, 8),
-                            ),
-                          ],
-                        ),
-                        child: Container(
-                          alignment: Alignment.center,
-                          padding: const EdgeInsets.all(0),
-                          child: const Text(
-                            "LET'S GO",
-                            style: TextStyle(
-                              fontWeight: FontWeight.bold,
-                              color: Colors.white,
-                            ),
-                          ),
-                        ),
-                      ),
-                    ),
-                  )
+                  _buildElevatedButton(context, "LOGIN", kPrimaryColor, Colors.white, () => Navigator.push(
+                    context,
+                    MaterialPageRoute(builder: (context) => const LoginScreen()), // Navigate to Login screen
+                  ),),
+                  SizedBox(height: size.height * 0.03),
+                  _buildElevatedButton(context, "SIGN UP", kPrimaryColor2, Colors.black, () => Navigator.push(
+                    context,
+                    MaterialPageRoute(builder: (context) => const RegisterScreen()), // Navigate to Sign Up screen
+                  ),), // Use a different text color here
                 ],
-              )
+              ),
             ],
+          ),
+        ),
+      ),
+    );
+  }
+
+  Widget _buildElevatedButton(BuildContext context, String text, Color buttonColor, Color textColor, VoidCallback onPressed) {
+    return SizedBox(
+      width: MediaQuery.of(context).size.width * 0.5,
+      height: 60.0,
+      child: ElevatedButton(
+        onPressed: onPressed,
+        style: ElevatedButton.styleFrom(
+          foregroundColor: textColor,
+          backgroundColor: buttonColor, // Use the passed color
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(80.0),
+          ),
+          padding: EdgeInsets.zero, // Removes padding around the button
+          shadowColor: buttonColor.withOpacity(0.30), // Shadow color
+          elevation: 20, // Adjusts shadow blur
+        ),
+        child: Ink(
+          decoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(80.0),
+            color: buttonColor, // Use the passed color
+            boxShadow: [
+              BoxShadow(
+                color: buttonColor.withOpacity(0.30),
+                blurRadius: 20,
+                offset: const Offset(0, 8),
+              ),
+            ],
+          ),
+          child: Container(
+            alignment: Alignment.center,
+            padding: const EdgeInsets.all(0),
+            child: Text(
+              text,
+              style: TextStyle(
+                fontWeight: FontWeight.bold,
+                color: textColor, // Use the passed text color
+              ),
+            ),
           ),
         ),
       ),

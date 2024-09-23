@@ -5,10 +5,12 @@ import 'package:camplified/Screens/Camper/camper_enquire_status_screen.dart';
 import 'package:camplified/Screens/Camper/camper_search_campsites_screen.dart';
 import 'package:camplified/Screens/Camper/camper_submit_review_screen.dart';
 import 'package:camplified/Screens/CampsiteOwner/owner_home_screen.dart';
+import 'package:camplified/Screens/Register/register_screen.dart';
 import 'package:camplified/Screens/Welcome/welcome.dart';
 import 'package:camplified/Screens/login_signup.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'Screens/Login/login_screen.dart';
 import 'constants.dart';
 
 void main() {
@@ -31,9 +33,11 @@ class MyApp extends StatelessWidget {
           primarySwatch: Colors.blue,
           visualDensity: VisualDensity.adaptivePlatformDensity,
         ),
-        home: const OwnerHomeScreen(), //LoginSignupScreen(),
+        home: const LoginScreen(),
         routes: {
-          '/auth': (context) => const LoginSignupScreen(),
+          '/login': (context) => const LoginScreen(),
+          '/register': (context) => const RegisterScreen(),
+          '/welcome': (context) => const WelcomeScreen(),
           '/camper/home': (context) => const CamperHomeScreen(),
           '/camper/apply_permit': (context) => const CamperApplyPermitScreen(),
           '/camper/enquire_status': (context) =>

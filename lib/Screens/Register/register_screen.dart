@@ -1,3 +1,4 @@
+import 'package:camplified/Screens/Register/Components/social_sign_up.dart';
 import 'package:flutter/material.dart';
 
 class RegisterScreen extends StatefulWidget {
@@ -11,25 +12,50 @@ class _RegisterScreenState extends State<RegisterScreen> {
   final _formKey = GlobalKey<FormState>();
   String _email = '';
   String _password = '';
-  final String _confirmPassword = '';
+  String _selectedRole = 'Camper';
+  
+  //To control password visibility
+  bool _isPasswordVisible = false;
+  bool _isConfirmPasswordVisible = false;
+
+  // Initialize Firebase Auth and Firestore
+  // final FirebaseAuth _auth = FirebaseAuth.instance;
+  // final FirebaseFirestore _firestore = FirebaseFirestore.instance;
 
   void _register() {
     if (_formKey.currentState!.validate()) {
       _formKey.currentState!.save();
 
-      // TODO: Implement the actual registration logic with your AuthService
+      try {
+      // Create user with email and password
+      // UserCredential userCredential = await _auth.createUserWithEmailAndPassword(
+      //   email: _email,
+      //   password: _password,
+      // );
+
+      // // Store user role in Firestore
+      // await _firestore.collection('users').doc(userCredential.user?.uid).set({
+      //   'role': _selectedRole,
+      //   'email': _email,
+      // });
 
       ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text('Registering $_email')),
+        SnackBar(content: Text('Registered $_email successfully!')),
       );
 
-      // Navigate to login screen or directly to home screen after registration
+      // Navigate to login or home screen
       Navigator.pushNamed(context, '/login');
+    } catch (e) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text('Registration failed: $e')),
+      );
+    }
     }
   }
 
   @override
   Widget build(BuildContext context) {
+    Size size = MediaQuery.of(context).size;
     return Scaffold(
       appBar: AppBar(
         title: const Text('Register'),
@@ -56,8 +82,20 @@ class _RegisterScreenState extends State<RegisterScreen> {
                 },
               ),
               TextFormField(
-                decoration: const InputDecoration(labelText: 'Password'),
-                obscureText: true,
+                obscureText: !_isPasswordVisible,
+                decoration: InputDecoration(
+                  labelText: 'Password',
+                  suffixIcon: IconButton(
+                    icon: Icon(
+                      _isPasswordVisible ? Icons.visibility : Icons.visibility_off,
+                    ),
+                    onPressed: () {
+                      setState(() {
+                        _isPasswordVisible = !_isPasswordVisible;
+                      });
+                    },
+                  ),
+                ),
                 validator: (value) {
                   if (value == null || value.isEmpty) {
                     return 'Please enter your password';
@@ -71,9 +109,20 @@ class _RegisterScreenState extends State<RegisterScreen> {
                 },
               ),
               TextFormField(
-                decoration:
-                    const InputDecoration(labelText: 'Confirm Password'),
-                obscureText: true,
+                obscureText: !_isConfirmPasswordVisible,
+                decoration: InputDecoration(
+                  labelText: 'Confirm Password',
+                  suffixIcon: IconButton(
+                    icon: Icon(
+                      _isConfirmPasswordVisible ? Icons.visibility : Icons.visibility_off,
+                    ),
+                    onPressed: () {
+                      setState(() {
+                        _isConfirmPasswordVisible = !_isConfirmPasswordVisible;
+                      });
+                    },
+                  ),
+                ),
                 validator: (value) {
                   if (value == null || value.isEmpty) {
                     return 'Please confirm your password';
@@ -83,17 +132,48 @@ class _RegisterScreenState extends State<RegisterScreen> {
                   return null;
                 },
               ),
-              const SizedBox(height: 20),
+              SizedBox(height: size.height * 0.01),
+              Row(
+                children: [
+                  const Text('Select Role: '),
+                  DropdownButton<String>(
+                    value: _selectedRole,
+                    onChanged: (String? newValue) {
+                      setState(() {
+                        _selectedRole = newValue!;
+                      });
+                    },
+                    items: <String>['Camper', 'Campsite Owner']
+                        .map<DropdownMenuItem<String>>((String value) {
+                      return DropdownMenuItem<String>(
+                        value: value,
+                        child: Text(value),
+                      );
+                    }).toList(),
+                  )
+                ],
+              ),
               ElevatedButton(
                 onPressed: _register,
                 child: const Text('Register'),
               ),
-              TextButton(
-                onPressed: () {
-                  Navigator.pushNamed(context, '/login');
-                },
-                child: const Text('Already have an account? Login here'),
+              SizedBox(height: size.height * 0.01),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  const Text(
+                    style: const TextStyle(fontSize: 16),
+                    'Already have an account?',         
+                  ),
+                  TextButton(
+                    onPressed: () {
+                      Navigator.pushNamed(context, '/login');
+                    },
+                    child: const Text('Login here'),
+                  ),
+                ],
               ),
+              SocialSignUp(),
             ],
           ),
         ),
