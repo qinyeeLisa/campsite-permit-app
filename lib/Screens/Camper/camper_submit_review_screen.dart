@@ -1,4 +1,6 @@
+import 'dart:convert';
 import 'package:flutter/material.dart';
+import 'package:http/http.dart' as http;
 
 class CamperSubmitReviewScreen extends StatefulWidget {
   const CamperSubmitReviewScreen({super.key});
@@ -10,24 +12,62 @@ class CamperSubmitReviewScreen extends StatefulWidget {
 
 class _CamperSubmitReviewScreenState extends State<CamperSubmitReviewScreen> {
   final _formKey = GlobalKey<FormState>();
-  final TextEditingController _subjectController = TextEditingController();
-  final TextEditingController _contentController = TextEditingController();
+  final TextEditingController _descriptionController = TextEditingController();
+  final TextEditingController _ratingController = TextEditingController();
+  int? _selectedRating;
 
   @override
   void dispose() {
-    _subjectController.dispose();
-    _contentController.dispose();
+    _descriptionController.dispose();
+    _ratingController.dispose();
     super.dispose();
   }
 
-  void _submitFeedback() {
+  Future<void> _submitReview() async {
     if (_formKey.currentState!.validate()) {
-      // Perform the feedback submission logic here
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text('Feedback Submitted!')),
-      );
-      // Navigate back to the previous screen (CamperHomeScreen)
-      Navigator.pop(context);
+      final String description = _descriptionController.text;
+      final int rating = _selectedRating!;
+
+      // Review data
+      final Map<String, dynamic> reviewData = {
+        "userId": 3, // Replace this with dynamic userId if needed
+        "description": description,
+        "rating": rating,
+      };
+
+      // API URL
+      const String apiUrl =
+          "https://eqqd1j4q2j.execute-api.ap-southeast-1.amazonaws.com/dev/ratingsapi/rating/AddRating/";
+
+      try {
+        // Make the POST request
+        final response = await http.post(
+          Uri.parse(apiUrl),
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: jsonEncode(reviewData),
+        );
+
+        if (response.statusCode == 200) {
+          // Show a success message
+          ScaffoldMessenger.of(context).showSnackBar(
+            const SnackBar(content: Text('Review Submitted!')),
+          );
+          // Navigate back to the previous screen (CamperHomeScreen)
+          Navigator.pushReplacementNamed(context, '/camper/home');
+        } else {
+          // Show an error message if submission failed
+          ScaffoldMessenger.of(context).showSnackBar(
+            const SnackBar(content: Text('Failed to submit review')),
+          );
+        }
+      } catch (error) {
+        // Handle network errors
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(content: Text('An error occurred. Please try again.')),
+        );
+      }
     }
   }
 
@@ -45,35 +85,46 @@ class _CamperSubmitReviewScreenState extends State<CamperSubmitReviewScreen> {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               const Text(
-                'Subject',
+                'Description',
                 style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
               ),
               TextFormField(
-                controller: _subjectController,
+                controller: _descriptionController,
                 decoration: const InputDecoration(
-                  hintText: 'Enter subject',
+                  hintText: 'Enter review description',
                 ),
+                maxLines: 5,
                 validator: (value) {
                   if (value == null || value.isEmpty) {
-                    return 'Please enter a subject';
+                    return 'Please enter a description';
                   }
                   return null;
                 },
               ),
               const SizedBox(height: 16),
               const Text(
-                'Content',
+                'Rating (1 - Worse, 5 - Best)',
                 style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
               ),
-              TextFormField(
-                controller: _contentController,
+              DropdownButtonFormField<int>(
+                value: _selectedRating,
                 decoration: const InputDecoration(
-                  hintText: 'Enter your feedback',
+                  hintText: 'Select a rating',
                 ),
-                maxLines: 5,
+                items: List.generate(5, (index) => index + 1)
+                    .map((rating) => DropdownMenuItem<int>(
+                          value: rating,
+                          child: Text(rating.toString()),
+                        ))
+                    .toList(),
+                onChanged: (value) {
+                  setState(() {
+                    _selectedRating = value;
+                  });
+                },
                 validator: (value) {
-                  if (value == null || value.isEmpty) {
-                    return 'Please enter content';
+                  if (value == null) {
+                    return 'Please select a rating';
                   }
                   return null;
                 },
@@ -81,8 +132,8 @@ class _CamperSubmitReviewScreenState extends State<CamperSubmitReviewScreen> {
               const SizedBox(height: 16),
               Center(
                 child: ElevatedButton(
-                  onPressed: _submitFeedback,
-                  child: const Text('Submit Feedback'),
+                  onPressed: _submitReview,
+                  child: const Text('Submit Review'),
                 ),
               ),
             ],
@@ -92,3 +143,103 @@ class _CamperSubmitReviewScreenState extends State<CamperSubmitReviewScreen> {
     );
   }
 }
+
+
+
+
+
+//original
+// import 'package:flutter/material.dart';
+
+// class CamperSubmitReviewScreen extends StatefulWidget {
+//   const CamperSubmitReviewScreen({super.key});
+
+//   @override
+//   State<CamperSubmitReviewScreen> createState() =>
+//       _CamperSubmitReviewScreenState();
+// }
+
+// class _CamperSubmitReviewScreenState extends State<CamperSubmitReviewScreen> {
+//   final _formKey = GlobalKey<FormState>();
+//   final TextEditingController _subjectController = TextEditingController();
+//   final TextEditingController _contentController = TextEditingController();
+
+//   @override
+//   void dispose() {
+//     _subjectController.dispose();
+//     _contentController.dispose();
+//     super.dispose();
+//   }
+
+//   void _submitFeedback() {
+//     if (_formKey.currentState!.validate()) {
+//       // Perform the feedback submission logic here
+//       ScaffoldMessenger.of(context).showSnackBar(
+//         const SnackBar(content: Text('Feedback Submitted!')),
+//       );
+//       // Navigate back to the previous screen (CamperHomeScreen)
+//       Navigator.pop(context);
+//     }
+//   }
+
+//   @override
+//   Widget build(BuildContext context) {
+//     return Scaffold(
+//       appBar: AppBar(
+//         title: const Text("Submit Review"),
+//       ),
+//       body: Padding(
+//         padding: const EdgeInsets.all(16.0),
+//         child: Form(
+//           key: _formKey,
+//           child: Column(
+//             crossAxisAlignment: CrossAxisAlignment.start,
+//             children: [
+//               const Text(
+//                 'Subject',
+//                 style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+//               ),
+//               TextFormField(
+//                 controller: _subjectController,
+//                 decoration: const InputDecoration(
+//                   hintText: 'Enter subject',
+//                 ),
+//                 validator: (value) {
+//                   if (value == null || value.isEmpty) {
+//                     return 'Please enter a subject';
+//                   }
+//                   return null;
+//                 },
+//               ),
+//               const SizedBox(height: 16),
+//               const Text(
+//                 'Content',
+//                 style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+//               ),
+//               TextFormField(
+//                 controller: _contentController,
+//                 decoration: const InputDecoration(
+//                   hintText: 'Enter your feedback',
+//                 ),
+//                 maxLines: 5,
+//                 validator: (value) {
+//                   if (value == null || value.isEmpty) {
+//                     return 'Please enter content';
+//                   }
+//                   return null;
+//                 },
+//               ),
+//               const SizedBox(height: 16),
+//               Center(
+//                 child: ElevatedButton(
+//                   onPressed: _submitFeedback,
+//                   child: const Text('Submit Feedback'),
+//                 ),
+//               ),
+//             ],
+//           ),
+//         ),
+//       ),
+//     );
+//   }
+// }
