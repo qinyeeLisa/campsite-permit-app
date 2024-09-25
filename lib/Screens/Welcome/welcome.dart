@@ -2,7 +2,6 @@
 import 'package:camplified/Screens/Camper/camper_home_screen.dart';
 import 'package:camplified/Screens/Login/login_screen.dart';
 import 'package:camplified/Screens/Register/register_screen.dart';
-import 'package:camplified/Screens/login_signup.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_svg/flutter_svg.dart';

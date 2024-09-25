@@ -1,4 +1,5 @@
 import 'package:camplified/Screens/Register/Components/social_sign_up.dart';
+import 'package:camplified/services/auth_service.dart';
 import 'package:flutter/material.dart';
 
 class RegisterScreen extends StatefulWidget {
@@ -10,9 +11,13 @@ class RegisterScreen extends StatefulWidget {
 
 class _RegisterScreenState extends State<RegisterScreen> {
   final _formKey = GlobalKey<FormState>();
+  final _auth = AuthService();
+  final _passwordController = TextEditingController();
   String _email = '';
   String _password = '';
+  String _confirmPassword = '';
   String _selectedRole = 'Camper';
+  
   
   //To control password visibility
   bool _isPasswordVisible = false;
@@ -22,16 +27,12 @@ class _RegisterScreenState extends State<RegisterScreen> {
   // final FirebaseAuth _auth = FirebaseAuth.instance;
   // final FirebaseFirestore _firestore = FirebaseFirestore.instance;
 
-  void _register() {
+  void _register() async{
     if (_formKey.currentState!.validate()) {
       _formKey.currentState!.save();
 
-      try {
       // Create user with email and password
-      // UserCredential userCredential = await _auth.createUserWithEmailAndPassword(
-      //   email: _email,
-      //   password: _password,
-      // );
+      final user = await _auth.createUserWithEmailAndPassword( _email, _password);
 
       // // Store user role in Firestore
       // await _firestore.collection('users').doc(userCredential.user?.uid).set({
@@ -39,17 +40,14 @@ class _RegisterScreenState extends State<RegisterScreen> {
       //   'email': _email,
       // });
 
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text('Registered $_email successfully!')),
-      );
+      if (user != null) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text('Registered $_email successfully!')),
+        );
 
-      // Navigate to login or home screen
-      Navigator.pushNamed(context, '/login');
-    } catch (e) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text('Registration failed: $e')),
-      );
-    }
+        // Navigate to login or home screen
+        Navigator.pushNamed(context, '/login');
+      }
     }
   }
 
@@ -82,6 +80,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                 },
               ),
               TextFormField(
+                controller: _passwordController,
                 obscureText: !_isPasswordVisible,
                 decoration: InputDecoration(
                   labelText: 'Password',
@@ -98,7 +97,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                 ),
                 validator: (value) {
                   if (value == null || value.isEmpty) {
-                    return 'Please enter your password';
+                    return 'Please enter a valid password';
                   } else if (value.length < 6) {
                     return 'Password must be at least 6 characters long';
                   }
@@ -126,10 +125,13 @@ class _RegisterScreenState extends State<RegisterScreen> {
                 validator: (value) {
                   if (value == null || value.isEmpty) {
                     return 'Please confirm your password';
-                  } else if (value != _password) {
+                  } else if (value != _passwordController.text) {
                     return 'Passwords do not match';
                   }
                   return null;
+                },
+                onSaved: (value) {
+                  _confirmPassword = value!;
                 },
               ),
               SizedBox(height: size.height * 0.01),
