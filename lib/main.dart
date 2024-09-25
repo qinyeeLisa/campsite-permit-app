@@ -7,13 +7,35 @@ import 'package:camplified/Screens/Camper/camper_submit_review_screen.dart';
 import 'package:camplified/Screens/CampsiteOwner/owner_home_screen.dart';
 import 'package:camplified/Screens/Register/register_screen.dart';
 import 'package:camplified/Screens/Welcome/welcome.dart';
-import 'package:camplified/Screens/login_signup.dart';
+import 'package:firebase_core/firebase_core.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'Screens/Login/login_screen.dart';
 import 'constants.dart';
 
-void main() {
+void main() async{
+  WidgetsFlutterBinding.ensureInitialized();
+
+  //Initialize Firebase for Web
+  if (kIsWeb) {
+    await Firebase.initializeApp(
+      options: const FirebaseOptions
+      (   
+        apiKey: "AIzaSyCppfz3AOTw3EsVoh3DZhOZGWDjI0G0Z8E",
+        authDomain: "cpas-auth.firebaseapp.com",
+        projectId: "cpas-auth",
+        storageBucket: "cpas-auth.appspot.com",
+        messagingSenderId: "708697230446",
+        appId: "1:708697230446:web:4584fde96ce49094bcea7f",
+        measurementId: "G-GEW9QCR6TR"
+      )
+    );
+  }
+  else {
+    await Firebase.initializeApp();
+  }
+
   runApp(const MyApp());
 }
 

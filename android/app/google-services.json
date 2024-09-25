@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "708697230446",
+    "project_id": "cpas-auth",
+    "storage_bucket": "cpas-auth.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:708697230446:android:bb05c5bb6058850cbcea7f",
+        "android_client_info": {
+          "package_name": "com.example.cpas"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAScVvQ1e-mI3ogXVVICO4TC-VfneZKCmA"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
