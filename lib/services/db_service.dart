@@ -9,20 +9,27 @@ class DatabaseService{
   createUser(UserModel user){
     try{
       _firebase.collection('users').add({
-        'name': 'John',
-        'age': 30
+        'fullName': user.fullName,
+        'email': user.email,
+        //'password': user.password,
+        'role': user.role,
+        'DateTimeCreated': user.dateTimeCreated,
+        'DateTimeUpdated': user.dateTimeUpdated,
       });
+
+      return true;
     }catch(e){
       log(e.toString());
     }
   }
 
-  retrieveUsers(String email, String password) async{
+  retrieveUsers(String email) async{
     try{
-      final user = await _firebase.collection('users')
+      final userDoc = await _firebase.collection('users')
         .where('email', isEqualTo: email)
-        .where('password', isEqualTo: password)
         .get();
+
+      return userDoc.docs.first.data() as Map<String, dynamic>;
     }catch(e){
       log(e.toString());
     }

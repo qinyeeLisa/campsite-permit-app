@@ -1,4 +1,5 @@
 import 'package:camplified/Screens/Register/Components/social_sign_up.dart';
+import 'package:camplified/model/user_model.dart';
 import 'package:camplified/services/auth_service.dart';
 import 'package:camplified/services/db_service.dart';
 import 'package:flutter/material.dart';
@@ -28,10 +29,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
   int _selectedRoleIndex = 0; // Initialize with the index of the default role
 
   List<String> _roles = ['Camper', 'Campsite Owner'];
-  
-  // Initialize Firebase Auth and Firestore
-  // final FirebaseAuth _auth = FirebaseAuth.instance;
-  // final FirebaseFirestore _firestore = FirebaseFirestore.instance;
+
 
   void _register() async {
     if (_formKey.currentState!.validate()) {
@@ -41,23 +39,54 @@ class _RegisterScreenState extends State<RegisterScreen> {
       final user =
           await _auth.createUserWithEmailAndPassword(_email, _password);
 
-      //DatabaseService.createUser(user!.uid, _email, _roles[_selectedRoleIndex]);
+      UserModel userModel = UserModel(
+        fullName: _nameController.text,
+        email: _email,
+        role: _selectedRoleIndex,
+        dateTimeCreated: DateTime.now(),
+        dateTimeUpdated: DateTime.now(),
+      );
 
-      // // Store user role in Firestore
-      // await _firestore.collection('users').doc(userCredential.user?.uid).set({
-      //   'role': _selectedRole,
-      //   'email': _email,
-      // });
+      // Create user in database
+      dynamic result = await _dbService.createUser(userModel);
 
-      if (user != null) {
+      if (user != null && result == true) {
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(content: Text('Registered $_email successfully!')),
         );
 
         // Navigate to login or home screen
         Navigator.pushNamed(context, '/login');
+      }else{
+        _showSignUpErrorDialog();
       }
     }
+  }
+
+  void _showSignUpErrorDialog() {
+    showDialog(
+        context: context,
+        barrierDismissible: false,
+        builder: (BuildContext context) {
+          return new AlertDialog(
+            title: new Text("Error"),
+            content: new SingleChildScrollView(
+              child: new ListBody(
+                children: [
+                  new Text("Error on signing up. Please try again!"),
+                ],
+              ),
+            ),
+            actions: [
+              new TextButton(
+                child: new Text("OK"),
+                onPressed: () {
+                  Navigator.of(context).pop();
+                },
+              ),
+            ],
+          );
+        });
   }
 
   @override
