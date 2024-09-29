@@ -8,7 +8,6 @@ class AuthService{
   Future<User?> createUserWithEmailAndPassword(String email, String password) async{
     try{
       final results = await _auth.createUserWithEmailAndPassword(email: email, password: password);
-      //await DatabaseServices(uid: user.uid).updateUserData(user.uid,name, email);
       return results.user;
     }
     catch(e){

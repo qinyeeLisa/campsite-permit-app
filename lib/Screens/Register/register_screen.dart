@@ -1,5 +1,7 @@
 import 'package:camplified/Screens/Register/Components/social_sign_up.dart';
+import 'package:camplified/model/user_model.dart';
 import 'package:camplified/services/auth_service.dart';
+import 'package:camplified/services/db_service.dart';
 import 'package:flutter/material.dart';
 
 class RegisterScreen extends StatefulWidget {
@@ -10,45 +12,81 @@ class RegisterScreen extends StatefulWidget {
 }
 
 class _RegisterScreenState extends State<RegisterScreen> {
+  final _dbService = DatabaseService();
+
   final _formKey = GlobalKey<FormState>();
   final _auth = AuthService();
   final _passwordController = TextEditingController();
+  final _nameController = TextEditingController();
   String _email = '';
   String _password = '';
   String _confirmPassword = '';
-  String _selectedRole = 'Camper';
-  
   
   //To control password visibility
   bool _isPasswordVisible = false;
   bool _isConfirmPasswordVisible = false;
 
-  // Initialize Firebase Auth and Firestore
-  // final FirebaseAuth _auth = FirebaseAuth.instance;
-  // final FirebaseFirestore _firestore = FirebaseFirestore.instance;
+  int _selectedRoleIndex = 0; // Initialize with the index of the default role
 
-  void _register() async{
+  List<String> _roles = ['Camper', 'Campsite Owner'];
+
+
+  void _register() async {
     if (_formKey.currentState!.validate()) {
       _formKey.currentState!.save();
 
       // Create user with email and password
-      final user = await _auth.createUserWithEmailAndPassword( _email, _password);
+      final user =
+          await _auth.createUserWithEmailAndPassword(_email, _password);
 
-      // // Store user role in Firestore
-      // await _firestore.collection('users').doc(userCredential.user?.uid).set({
-      //   'role': _selectedRole,
-      //   'email': _email,
-      // });
+      UserModel userModel = UserModel(
+        fullName: _nameController.text,
+        email: _email,
+        role: _selectedRoleIndex,
+        dateTimeCreated: DateTime.now(),
+        dateTimeUpdated: DateTime.now(),
+      );
 
-      if (user != null) {
+      // Create user in database
+      dynamic result = await _dbService.createUser(userModel);
+
+      if (user != null && result == true) {
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(content: Text('Registered $_email successfully!')),
         );
 
         // Navigate to login or home screen
         Navigator.pushNamed(context, '/login');
+      }else{
+        _showSignUpErrorDialog();
       }
     }
+  }
+
+  void _showSignUpErrorDialog() {
+    showDialog(
+        context: context,
+        barrierDismissible: false,
+        builder: (BuildContext context) {
+          return new AlertDialog(
+            title: new Text("Error"),
+            content: new SingleChildScrollView(
+              child: new ListBody(
+                children: [
+                  new Text("Error on signing up. Please try again!"),
+                ],
+              ),
+            ),
+            actions: [
+              new TextButton(
+                child: new Text("OK"),
+                onPressed: () {
+                  Navigator.of(context).pop();
+                },
+              ),
+            ],
+          );
+        });
   }
 
   @override
@@ -64,6 +102,19 @@ class _RegisterScreenState extends State<RegisterScreen> {
           key: _formKey,
           child: Column(
             children: <Widget>[
+              TextFormField(
+                controller: _nameController,
+                decoration: const InputDecoration(labelText: 'Full Name'),
+                validator: (value) {
+                  if (value == null || value.isEmpty) {
+                    return 'Please enter your name';
+                  }
+                  return null;
+                },
+                onSaved: (value) {
+                  _email = value!;
+                },
+              ),
               TextFormField(
                 decoration: const InputDecoration(labelText: 'Email'),
                 keyboardType: TextInputType.emailAddress,
@@ -86,7 +137,9 @@ class _RegisterScreenState extends State<RegisterScreen> {
                   labelText: 'Password',
                   suffixIcon: IconButton(
                     icon: Icon(
-                      _isPasswordVisible ? Icons.visibility : Icons.visibility_off,
+                      _isPasswordVisible
+                          ? Icons.visibility
+                          : Icons.visibility_off,
                     ),
                     onPressed: () {
                       setState(() {
@@ -113,7 +166,9 @@ class _RegisterScreenState extends State<RegisterScreen> {
                   labelText: 'Confirm Password',
                   suffixIcon: IconButton(
                     icon: Icon(
-                      _isConfirmPasswordVisible ? Icons.visibility : Icons.visibility_off,
+                      _isConfirmPasswordVisible
+                          ? Icons.visibility
+                          : Icons.visibility_off,
                     ),
                     onPressed: () {
                       setState(() {
@@ -138,21 +193,20 @@ class _RegisterScreenState extends State<RegisterScreen> {
               Row(
                 children: [
                   const Text('Select Role: '),
-                  DropdownButton<String>(
-                    value: _selectedRole,
-                    onChanged: (String? newValue) {
-                      setState(() {
-                        _selectedRole = newValue!;
-                      });
-                    },
-                    items: <String>['Camper', 'Campsite Owner']
-                        .map<DropdownMenuItem<String>>((String value) {
-                      return DropdownMenuItem<String>(
-                        value: value,
-                        child: Text(value),
+                  DropdownButton(
+                    value: _selectedRoleIndex,
+                    items: _roles.asMap().entries.map((entry) {
+                      return DropdownMenuItem<int>(
+                        value: entry.key,
+                        child: Text(entry.value),
                       );
                     }).toList(),
-                  )
+                    onChanged: (value) {
+                      setState(() {
+                        _selectedRoleIndex = value!;
+                      });
+                    },
+                  ),
                 ],
               ),
               ElevatedButton(

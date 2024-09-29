@@ -7,10 +7,12 @@ import 'package:camplified/Screens/Camper/camper_submit_review_screen.dart';
 import 'package:camplified/Screens/CampsiteOwner/owner_home_screen.dart';
 import 'package:camplified/Screens/Register/register_screen.dart';
 import 'package:camplified/Screens/Welcome/welcome.dart';
+import 'package:camplified/services/user_provider.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:provider/provider.dart';
 import 'Screens/Login/login_screen.dart';
 import 'constants.dart';
 
@@ -36,7 +38,15 @@ void main() async{
     await Firebase.initializeApp();
   }
 
-  runApp(const MyApp());
+  //runApp(const MyApp());
+  runApp(
+    MultiProvider(
+      providers: [
+        ChangeNotifierProvider(create: (_) => UserProvider()),
+      ],
+      child: MyApp(),
+    ),
+  );
 }
 
 class MyApp extends StatelessWidget {
