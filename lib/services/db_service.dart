@@ -34,4 +34,21 @@ class DatabaseService{
       log(e.toString());
     }
   }
+
+  Future<bool> checkUserExist(String email) async{
+    try{
+      final userDoc = await _firebase.collection('users')
+        .where('email', isEqualTo: email)
+        .get();
+
+        if (userDoc.size > 0) {
+          return true;
+        } else {
+          return false;
+        }
+      } catch(e){
+      log(e.toString());
+      return false;
+    }
+  }
 }
