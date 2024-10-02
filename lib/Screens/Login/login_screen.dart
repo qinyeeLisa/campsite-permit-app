@@ -44,6 +44,66 @@ class _LoginScreenState extends State<LoginScreen> {
     _passwordController.dispose();
   }
 
+  void login() async {
+    if (_formKey.currentState!.validate()) {
+      _formKey.currentState!.save();
+
+      dynamic result =
+          await _auth.loginUserWithEmailAndPassword(_email, _password);
+
+      if (result == null) {
+        _showErrorDialog();
+      } else {
+        dynamic userData = await databaseService.retrieveUsers(_email);
+
+        int role = userData['role'];
+        
+        UserModel user = UserModel(
+            userId: int.parse(userData['userId']),
+            email: userData['email'],
+            fullName: userData['fullName'],
+            role: userData['role'],
+            );
+
+        Provider.of<UserProvider>(context, listen: false).setUser(user);
+        
+        if (role == 2) {
+          Navigator.pushNamed(context, '/admin/home');
+        } else if (role == 1) {
+          Navigator.pushNamed(context, '/campsite_owner/home');
+        } else {
+          Navigator.pushNamed(context, '/camper/home');
+        }
+      }
+    }
+  }
+
+  void _showErrorDialog() {
+    showDialog(
+        context: context,
+        barrierDismissible: false,
+        builder: (BuildContext context) {
+          return new AlertDialog(
+            title: new Text("Error"),
+            content: new SingleChildScrollView(
+              child: new ListBody(
+                children: [
+                  new Text("Invalid email/password! Please try again!"),
+                ],
+              ),
+            ),
+            actions: [
+              new TextButton(
+                child: new Text("OK"),
+                onPressed: () {
+                  Navigator.of(context).pop();
+                },
+              ),
+            ],
+          );
+        });
+  }
+
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
     return Scaffold(
@@ -122,65 +182,5 @@ class _LoginScreenState extends State<LoginScreen> {
         ),
       ),
     );
-  }
-
-  void login() async {
-    if (_formKey.currentState!.validate()) {
-      _formKey.currentState!.save();
-
-      dynamic result =
-          await _auth.loginUserWithEmailAndPassword(_email, _password);
-
-      if (result == null) {
-        _showErrorDialog();
-      } else {
-        dynamic userData = await databaseService.retrieveUsers(_email);
-
-        int role = userData['role'];
-        
-        UserModel user = UserModel(
-            userId: int.parse(userData['userId']),
-            email: userData['email'],
-            fullName: userData['fullName'],
-            role: userData['role'],
-            );
-
-        Provider.of<UserProvider>(context, listen: false).setUser(user);
-        
-        if (role == 2) {
-          Navigator.pushNamed(context, '/admin/home');
-        } else if (role == 1) {
-          Navigator.pushNamed(context, '/campsite_owner/home');
-        } else {
-          Navigator.pushNamed(context, '/camper/home');
-        }
-      }
-    }
-  }
-
-  void _showErrorDialog() {
-    showDialog(
-        context: context,
-        barrierDismissible: false,
-        builder: (BuildContext context) {
-          return new AlertDialog(
-            title: new Text("Error"),
-            content: new SingleChildScrollView(
-              child: new ListBody(
-                children: [
-                  new Text("Invalid email/password! Please try again!"),
-                ],
-              ),
-            ),
-            actions: [
-              new TextButton(
-                child: new Text("OK"),
-                onPressed: () {
-                  Navigator.of(context).pop();
-                },
-              ),
-            ],
-          );
-        });
   }
 }
