@@ -35,35 +35,42 @@ class _RegisterScreenState extends State<RegisterScreen> {
     if (_formKey.currentState!.validate()) {
       _formKey.currentState!.save();
 
-      // Create user with email and password
-      final user =
-          await _auth.createUserWithEmailAndPassword(_email, _password);
+      bool userExist = await _dbService.checkUserExist(_email);
+      
+      if (userExist) {
+        _showSignUpErrorDialog('Account exists. Please login with your credentials!');
+      }
+      else{
+        // Create user with email and password
+        final user =
+            await _auth.createUserWithEmailAndPassword(_email, _password);
 
-      UserModel userModel = UserModel(
-        fullName: _nameController.text,
-        email: _email,
-        role: _selectedRoleIndex,
-        dateTimeCreated: DateTime.now(),
-        dateTimeUpdated: DateTime.now(),
-      );
-
-      // Create user in database
-      dynamic result = await _dbService.createUser(userModel);
-
-      if (user != null && result == true) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text('Registered $_email successfully!')),
+        UserModel userModel = UserModel(
+          fullName: _nameController.text,
+          email: _email,
+          role: _selectedRoleIndex,
+          dateTimeCreated: DateTime.now(),
+          dateTimeUpdated: DateTime.now(),
         );
 
-        // Navigate to login or home screen
-        Navigator.pushNamed(context, '/login');
-      }else{
-        _showSignUpErrorDialog();
+        // Create user in database
+        dynamic result = await _dbService.createUser(userModel);
+
+        if (user != null && result == true) {
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(content: Text('Registered $_email successfully!')),
+          );
+
+          // Navigate to login or home screen
+          Navigator.pushNamed(context, '/login');
+        }else{
+          _showSignUpErrorDialog('Error on signing up. Please try again!');
+        }
       }
     }
   }
 
-  void _showSignUpErrorDialog() {
+  void _showSignUpErrorDialog(String errorText) {
     showDialog(
         context: context,
         barrierDismissible: false,
@@ -73,7 +80,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
             content: new SingleChildScrollView(
               child: new ListBody(
                 children: [
-                  new Text("Error on signing up. Please try again!"),
+                  new Text(errorText),
                 ],
               ),
             ),
