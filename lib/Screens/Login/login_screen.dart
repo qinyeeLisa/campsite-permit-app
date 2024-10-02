@@ -137,16 +137,16 @@ class _LoginScreenState extends State<LoginScreen> {
         dynamic userData = await databaseService.retrieveUsers(_email);
 
         int role = userData['role'];
+        
+        UserModel user = UserModel(
+            userId: int.parse(userData['userId']),
+            email: userData['email'],
+            fullName: userData['fullName'],
+            role: userData['role'],
+            );
 
-        // UserModel user = UserModel(
-        //     email: userData['email'],
-        //     fullName: userData['fullName'],
-        //     role: userData['role'],
-        //     dateTimeCreated: userData['dateTimeCreated'],
-        //     dateTimeUpdated: userData['dateTimeUpdated']);
-
-        // Provider.of<UserProvider>(context, listen: false).setUser(user);
-
+        Provider.of<UserProvider>(context, listen: false).setUser(user);
+        
         if (role == 2) {
           Navigator.pushNamed(context, '/admin/home');
         } else if (role == 1) {
