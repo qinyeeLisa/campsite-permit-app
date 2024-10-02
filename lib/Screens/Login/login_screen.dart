@@ -5,6 +5,7 @@ import 'package:provider/provider.dart';
 
 import '../../services/auth_service.dart';
 import '../../services/user_provider.dart';
+import 'Components/social_sign_in.dart';
 
 String? validateEmail(String value) {
   RegExp regex =
@@ -177,6 +178,7 @@ class _LoginScreenState extends State<LoginScreen> {
                   ),
                 ],
               ),
+              SocialSignIn(),
             ],
           ),
         ),

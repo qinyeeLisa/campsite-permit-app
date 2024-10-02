@@ -1,4 +1,3 @@
-import 'package:camplified/Screens/Register/Components/social_sign_up.dart';
 import 'package:camplified/model/user_model.dart';
 import 'package:camplified/services/auth_service.dart';
 import 'package:camplified/services/db_service.dart';
@@ -236,7 +235,6 @@ class _RegisterScreenState extends State<RegisterScreen> {
                   ),
                 ],
               ),
-              SocialSignUp(),
             ],
           ),
         ),

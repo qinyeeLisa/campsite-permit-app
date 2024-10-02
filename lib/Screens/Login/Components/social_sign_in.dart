@@ -3,8 +3,8 @@ import 'package:flutter/material.dart';
 import 'or_divider.dart';
 import 'social_icon.dart';
 
-class SocialSignUp extends StatelessWidget {
-  const SocialSignUp({
+class SocialSignIn extends StatelessWidget {
+  const SocialSignIn({
     Key? key,
   }) : super(key: key);
 
