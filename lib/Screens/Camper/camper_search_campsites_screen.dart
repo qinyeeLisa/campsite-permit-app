@@ -24,7 +24,9 @@ class _CamperSearchCampsitesScreenState
 
   Future<void> fetchCampsites() async {
     final url = Uri.parse(
-        'https://eqqd1j4q2j.execute-api.ap-southeast-1.amazonaws.com/dev/campsitesapi/campsites/');
+        'https://d24mqpbjn8370i.cloudfront.net/campsitesapi/campsites/'
+        // 'https://eqqd1j4q2j.execute-api.ap-southeast-1.amazonaws.com/dev/campsitesapi/campsites/'
+        );
     try {
       final response = await http.get(url);
 

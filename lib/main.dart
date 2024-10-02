@@ -16,25 +16,21 @@ import 'package:provider/provider.dart';
 import 'Screens/Login/login_screen.dart';
 import 'constants.dart';
 
-void main() async{
+void main() async {
   WidgetsFlutterBinding.ensureInitialized();
 
   //Initialize Firebase for Web
   if (kIsWeb) {
     await Firebase.initializeApp(
-      options: const FirebaseOptions
-      (   
-        apiKey: "AIzaSyCppfz3AOTw3EsVoh3DZhOZGWDjI0G0Z8E",
-        authDomain: "cpas-auth.firebaseapp.com",
-        projectId: "cpas-auth",
-        storageBucket: "cpas-auth.appspot.com",
-        messagingSenderId: "708697230446",
-        appId: "1:708697230446:web:4584fde96ce49094bcea7f",
-        measurementId: "G-GEW9QCR6TR"
-      )
-    );
-  }
-  else {
+        options: const FirebaseOptions(
+            apiKey: "AIzaSyCppfz3AOTw3EsVoh3DZhOZGWDjI0G0Z8E",
+            authDomain: "cpas-auth.firebaseapp.com",
+            projectId: "cpas-auth",
+            storageBucket: "cpas-auth.appspot.com",
+            messagingSenderId: "708697230446",
+            appId: "1:708697230446:web:4584fde96ce49094bcea7f",
+            measurementId: "G-GEW9QCR6TR"));
+  } else {
     await Firebase.initializeApp();
   }
 

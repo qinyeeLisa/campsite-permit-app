@@ -22,8 +22,8 @@ class _OwnerHomeScreenState extends State<OwnerHomeScreen> {
 
   // Fetch permit applications from API
   Future<void> _fetchPermitApplications() async {
-    final url =
-        'https://eqqd1j4q2j.execute-api.ap-southeast-1.amazonaws.com/dev/permitapi/permit';
+    final url = 'https://d24mqpbjn8370i.cloudfront.net/permitapi/permit';
+    // 'https://eqqd1j4q2j.execute-api.ap-southeast-1.amazonaws.com/dev/permitapi/permit';
     try {
       final response = await http.get(Uri.parse(url));
       if (response.statusCode == 200) {
@@ -59,8 +59,8 @@ class _OwnerHomeScreenState extends State<OwnerHomeScreen> {
 
   // Approve permit application
   Future<void> _approveApplication(String permitId, String userId) async {
-    final url =
-        'https://eqqd1j4q2j.execute-api.ap-southeast-1.amazonaws.com/dev/approveapi/approve/';
+    final url = 'https://d24mqpbjn8370i.cloudfront.net/approveapi/approve/';
+    // 'https://eqqd1j4q2j.execute-api.ap-southeast-1.amazonaws.com/dev/approveapi/approve/';
 
     try {
       // Create the PermitInfoDto payload
@@ -98,7 +98,8 @@ class _OwnerHomeScreenState extends State<OwnerHomeScreen> {
 // Reject permit application
   Future<void> _rejectApplication(String permitId, String userId) async {
     final url =
-        'https://eqqd1j4q2j.execute-api.ap-southeast-1.amazonaws.com/dev/approveapi/approve/rejectpermit';
+        'https://d24mqpbjn8370i.cloudfront.net/approveapi/approve/rejectpermit';
+    //'https://eqqd1j4q2j.execute-api.ap-southeast-1.amazonaws.com/dev/approveapi/approve/rejectpermit';
 
     try {
       // Create the PermitInfoDto payload

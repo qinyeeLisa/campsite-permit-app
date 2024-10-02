@@ -37,7 +37,8 @@ class _CamperSubmitReviewScreenState extends State<CamperSubmitReviewScreen> {
 
       // API URL
       const String apiUrl =
-          "https://eqqd1j4q2j.execute-api.ap-southeast-1.amazonaws.com/dev/ratingsapi/rating/AddRating/";
+          "https://d24mqpbjn8370i.cloudfront.net/ratingsapi/rating/AddRating/";
+      // "https://eqqd1j4q2j.execute-api.ap-southeast-1.amazonaws.com/dev/ratingsapi/rating/AddRating/";
 
       try {
         // Make the POST request

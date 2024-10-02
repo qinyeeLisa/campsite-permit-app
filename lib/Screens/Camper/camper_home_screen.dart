@@ -20,7 +20,9 @@ class _CamperHomeScreenState extends State<CamperHomeScreen> {
 
   Future<void> fetchPermits() async {
     final url = Uri.parse(
-        'https://eqqd1j4q2j.execute-api.ap-southeast-1.amazonaws.com/dev/permitapi/permit');
+        'https://d24mqpbjn8370i.cloudfront.net/permitapi/permit'
+        // 'https://eqqd1j4q2j.execute-api.ap-southeast-1.amazonaws.com/dev/permitapi/permit'
+        );
     try {
       final response = await http.get(url);
 
