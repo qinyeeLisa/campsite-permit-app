@@ -138,14 +138,14 @@ class _LoginScreenState extends State<LoginScreen> {
 
         int role = userData['role'];
 
-        UserModel user = UserModel(
-            email: userData['email'],
-            fullName: userData['fullName'],
-            role: userData['role'],
-            dateTimeCreated: userData['dateTimeCreated'],
-            dateTimeUpdated: userData['dateTimeUpdated']);
+        // UserModel user = UserModel(
+        //     email: userData['email'],
+        //     fullName: userData['fullName'],
+        //     role: userData['role'],
+        //     dateTimeCreated: userData['dateTimeCreated'],
+        //     dateTimeUpdated: userData['dateTimeUpdated']);
 
-        Provider.of<UserProvider>(context, listen: false).setUser(user);
+        // Provider.of<UserProvider>(context, listen: false).setUser(user);
 
         if (role == 2) {
           Navigator.pushNamed(context, '/admin/home');
