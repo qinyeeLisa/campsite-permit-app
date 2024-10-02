@@ -36,7 +36,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
       _formKey.currentState!.save();
 
       bool userExist = await _dbService.checkUserExist(_email);
-      
+
       if (userExist) {
         _showSignUpErrorDialog('Account exists. Please login with your credentials!');
       }
@@ -48,9 +48,9 @@ class _RegisterScreenState extends State<RegisterScreen> {
         UserModel userModel = UserModel(
           fullName: _nameController.text,
           email: _email,
-          role: _selectedRoleIndex,
-          dateTimeCreated: DateTime.now(),
-          dateTimeUpdated: DateTime.now(),
+          role: _selectedRoleIndex
+          // dateTimeCreated: DateTime.now(),
+          // dateTimeUpdated: DateTime.now(),
         );
 
         // Create user in database

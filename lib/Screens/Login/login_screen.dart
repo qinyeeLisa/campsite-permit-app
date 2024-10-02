@@ -139,11 +139,11 @@ class _LoginScreenState extends State<LoginScreen> {
         int role = userData['role'];
 
         UserModel user = UserModel(
+            userId: int.parse(userData['userId']),
             email: userData['email'],
             fullName: userData['fullName'],
             role: userData['role'],
-            dateTimeCreated: userData['dateTimeCreated'],
-            dateTimeUpdated: userData['dateTimeUpdated']);
+            );
 
         Provider.of<UserProvider>(context, listen: false).setUser(user);
 
