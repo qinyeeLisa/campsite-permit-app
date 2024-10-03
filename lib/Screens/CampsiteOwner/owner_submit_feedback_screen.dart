@@ -1,6 +1,8 @@
 import 'dart:convert';
+import 'package:camplified/services/user_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
+import 'package:provider/provider.dart';
 
 class OwnerSubmitFeedbackScreen extends StatefulWidget {
   const OwnerSubmitFeedbackScreen({super.key});
@@ -27,9 +29,12 @@ class _OwnerSubmitFeedbackScreenState extends State<OwnerSubmitFeedbackScreen> {
       final String title = _titleController.text;
       final String description = _descriptionController.text;
 
+      final user = Provider.of<UserProvider>(context, listen: false).user;
+      int userId = user?.userId ?? 0;
+
       // Feedback data
       final Map<String, dynamic> feedbackData = {
-        "userId": 2, // Replace this with dynamic userId if needed
+        "userId": userId, // Replace this with dynamic userId if needed
         "title": title,
         "description": description,
       };

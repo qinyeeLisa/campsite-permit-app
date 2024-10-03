@@ -6,15 +6,23 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 class DatabaseService{
   final _firebase = FirebaseFirestore.instance;
 
-  createUser(UserModel user){
+  Future<int> getCurrentIdCount() async {
+    final QuerySnapshot querySnapshot = await FirebaseFirestore.instance.collection('users').get();
+    return querySnapshot.docs.length;
+}
+
+  createUser(UserModel user) async{
     try{
+      int currentCount = await getCurrentIdCount();
+
       _firebase.collection('users').add({
+        'id': currentCount + 1,
         'fullName': user.fullName,
         'email': user.email,
         //'password': user.password,
         'role': user.role,
-        'DateTimeCreated': user.dateTimeCreated,
-        'DateTimeUpdated': user.dateTimeUpdated,
+        // 'DateTimeCreated': user.dateTimeCreated,
+        // 'DateTimeUpdated': user.dateTimeUpdated,
       });
 
       return true;
@@ -32,6 +40,23 @@ class DatabaseService{
       return userDoc.docs.first.data() as Map<String, dynamic>;
     }catch(e){
       log(e.toString());
+    }
+  }
+
+  Future<bool> checkUserExist(String email) async{
+    try{
+      final userDoc = await _firebase.collection('users')
+        .where('email', isEqualTo: email)
+        .get();
+
+        if (userDoc.size > 0) {
+          return true;
+        } else {
+          return false;
+        }
+      } catch(e){
+      log(e.toString());
+      return false;
     }
   }
 }
