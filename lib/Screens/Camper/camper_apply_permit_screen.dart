@@ -2,6 +2,9 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:http/http.dart' as http;
+import 'package:provider/provider.dart';
+
+import '../../services/user_provider.dart';
 
 class CamperApplyPermitScreen extends StatefulWidget {
   const CamperApplyPermitScreen({super.key});
@@ -76,9 +79,12 @@ class _CamperApplyPermitScreenState extends State<CamperApplyPermitScreen> {
       return;
     }
 
+    final user = Provider.of<UserProvider>(context, listen: false).user;
+    int userId = user?.userId ?? 0;
+
     // Prepare data for submission
     final permitData = {
-      'UserId': 3, // Replace with actual user ID
+      'UserId': userId, // Replace with actual user ID
       'Location': _selectedLocation,
       'Area': _selectedArea,
       'StartDate': _dateFormat.format(_startDate!),
