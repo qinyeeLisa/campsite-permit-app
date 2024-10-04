@@ -16,7 +16,7 @@ class DatabaseService{
       int currentCount = await getCurrentIdCount();
 
       _firebase.collection('users').add({
-        'id': currentCount + 1,
+        'userId': currentCount + 1,
         'fullName': user.fullName,
         'email': user.email,
         //'password': user.password,

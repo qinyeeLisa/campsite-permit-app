@@ -1,0 +1,1 @@
+{"flutter":{"platforms":{"android":{"default":{"projectId":"cpas-auth","appId":"1:708697230446:android:bb05c5bb6058850cbcea7f","fileOutput":"android/app/google-services.json"}},"dart":{"lib/firebase_options.dart":{"projectId":"cpas-auth","configurations":{"android":"1:708697230446:android:bb05c5bb6058850cbcea7f","web":"1:708697230446:web:4584fde96ce49094bcea7f"}}}}}}
