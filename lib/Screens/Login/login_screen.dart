@@ -139,7 +139,7 @@ class _LoginScreenState extends State<LoginScreen> {
         int role = userData['role'];
         
         UserModel user = UserModel(
-            userId: int.parse(userData['userId']),
+            userId: userData['userId'],
             email: userData['email'],
             fullName: userData['fullName'],
             role: userData['role'],
