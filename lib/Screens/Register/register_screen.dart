@@ -47,9 +47,9 @@ class _RegisterScreenState extends State<RegisterScreen> {
         UserModel userModel = UserModel(
           fullName: _nameController.text,
           email: _email,
-          role: _selectedRoleIndex
-          // dateTimeCreated: DateTime.now(),
-          // dateTimeUpdated: DateTime.now(),
+          role: _selectedRoleIndex,
+          dateTimeCreated: DateTime.now(),
+          dateTimeUpdated: DateTime.now(),
         );
 
         // Create user in database

@@ -19,10 +19,9 @@ class DatabaseService{
         'userId': currentCount + 1,
         'fullName': user.fullName,
         'email': user.email,
-        //'password': user.password,
         'role': user.role,
-        // 'DateTimeCreated': user.dateTimeCreated,
-        // 'DateTimeUpdated': user.dateTimeUpdated,
+        'DateTimeCreated': user.dateTimeCreated,
+        'DateTimeUpdated': user.dateTimeUpdated,
       });
 
       return true;

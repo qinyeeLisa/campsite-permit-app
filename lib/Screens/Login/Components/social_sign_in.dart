@@ -1,11 +1,14 @@
+import 'package:camplified/Screens/Login/login_screen.dart';
 import 'package:flutter/material.dart';
 
 import 'or_divider.dart';
 import 'social_icon.dart';
 
 class SocialSignIn extends StatelessWidget {
+  final Function? googleSignInCallback;
+  
   const SocialSignIn({
-    Key? key,
+    Key? key, this.googleSignInCallback,
   }) : super(key: key);
 
   @override
@@ -21,8 +24,8 @@ class SocialSignIn extends StatelessWidget {
               press: () {},
             ),
             SocialIcon(
-              iconSrc: "assets/icons/google-plus.svg",
-              press: () {},
+              iconSrc: "assets/icons/logo-google.svg",
+              press: () => googleSignInCallback?.call(),
             ),
           ],
         ),
