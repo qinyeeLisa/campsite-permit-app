@@ -42,6 +42,7 @@ class _CamperHomeScreenState extends State<CamperHomeScreen> {
             permits = permitData
                 .map((data) => {
                       'permitId': data['permitId'],
+                      'userId': data['userId'],
                       'location': data['location'],
                       'area': data['area'],
                       'status': data['status'],
@@ -105,14 +106,14 @@ class _CamperHomeScreenState extends State<CamperHomeScreen> {
                 }
               },
             ),
-            ListTile(
+      /*      ListTile(
               leading: const Icon(Icons.search),
               title: const Text('Enquire Permit Status'),
               onTap: () {
                 Navigator.pop(context);
                 Navigator.pushNamed(context, '/camper/enquire_status');
               },
-            ),
+            ),*/
             ListTile(
               leading: const Icon(Icons.rate_review),
               title: const Text('Submit Review'),
@@ -164,6 +165,9 @@ class _CamperHomeScreenState extends State<CamperHomeScreen> {
                                       label: Text('Permit ID',
                                           style: TextStyle(fontSize: 10))),
                                   DataColumn(
+                                      label: Text('User ID',
+                                          style: TextStyle(fontSize: 10))),
+                                  DataColumn(
                                       label: Text('Location',
                                           style: TextStyle(fontSize: 10))),
                                   DataColumn(
@@ -182,6 +186,8 @@ class _CamperHomeScreenState extends State<CamperHomeScreen> {
                                 rows: permits.map((permit) {
                                   return DataRow(cells: [
                                     DataCell(Text(permit['permitId'].toString(),
+                                        style: const TextStyle(fontSize: 8))),
+                                    DataCell(Text(permit['userId'].toString(),
                                         style: const TextStyle(fontSize: 8))),
                                     DataCell(Text(permit['location'],
                                         style: const TextStyle(fontSize: 8))),

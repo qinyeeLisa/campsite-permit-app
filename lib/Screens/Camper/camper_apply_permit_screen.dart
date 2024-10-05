@@ -85,10 +85,12 @@ class _CamperApplyPermitScreenState extends State<CamperApplyPermitScreen> {
     // Prepare data for submission
     final permitData = {
       'UserId': userId, // Replace with actual user ID
-      'Location': _selectedLocation,
-      'Area': _selectedArea,
       'StartDate': _dateFormat.format(_startDate!),
       'EndDate': _dateFormat.format(_endDate!),
+      'Location': _selectedLocation,
+      'Area': _selectedArea,
+      'CreatedBy': user?.fullName,
+      'UpdatedBy': user?.fullName
       // Add other necessary fields based on the API
     };
 
