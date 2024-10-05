@@ -1,10 +1,13 @@
+import 'package:camplified/Screens/Shared/full_screen_loader.dart';
 import 'package:camplified/model/user_model.dart';
 import 'package:camplified/services/db_service.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 import '../../services/auth_service.dart';
 import '../../services/user_provider.dart';
+import 'Components/social_sign_in.dart';
 
 String? validateEmail(String value) {
   RegExp regex =
@@ -42,6 +45,152 @@ class _LoginScreenState extends State<LoginScreen> {
     super.dispose();
     _emailController.dispose();
     _passwordController.dispose();
+  }
+
+  void login() async {
+    if (_formKey.currentState!.validate()) {
+      _formKey.currentState!.save();
+
+      dynamic result =
+          await _auth.loginUserWithEmailAndPassword(_email, _password);
+
+      if (result == null) {
+        _showErrorDialog("Invalid email/password! Please try again!");
+      } else {
+        
+
+        await existingUserRedirection(_email);
+      }
+    }
+  }
+
+  Future<void> googleSignIn() async{
+    try {
+      //FullScreenLoader.openLoadingDialog(context, "Logging you in...");
+
+      final userCredentials = await _auth.signInWithGoogle();
+      
+      if (userCredentials != null) {
+        String uIdForFirestore = userCredentials.user!.uid;
+        String emailAddress = userCredentials.user!.email ?? "";
+
+        if (!await databaseService.checkUserExist(emailAddress)) {
+          int selectedRoleIndex = await _showRoleSelectionDialog();
+
+          UserModel user = UserModel(
+              userId: int.tryParse(uIdForFirestore),
+              email: emailAddress,
+              fullName: userCredentials.user!.displayName ?? "",
+              role: selectedRoleIndex,
+              dateTimeCreated: DateTime.now(),
+              dateTimeUpdated: DateTime.now()
+              );
+          
+          await databaseService.createUser(user);
+
+          await databaseService.retrieveUsers(user.email).then((value) {
+            user.userId = value['userId'];
+          });
+
+          Provider.of<UserProvider>(context, listen: false).setUser(user);
+
+          if (selectedRoleIndex == 1) {
+            Navigator.pushNamed(context, '/campsite_owner/home');
+          } else {
+            Navigator.pushNamed(context, '/camper/home');
+          }
+        }
+        else{
+          await existingUserRedirection(emailAddress);
+        }
+        
+      }
+    } catch(e){
+      _showErrorDialog("Error signing in with Google! Please try again!");
+    }
+  }
+
+  existingUserRedirection(String emailAdd) async{
+    dynamic userData = await databaseService.retrieveUsers(emailAdd);
+
+    int role = userData['role'];
+    
+    UserModel user = UserModel(
+        userId: userData['userId'],
+        email: userData['email'],
+        fullName: userData['fullName'],
+        role: userData['role'],
+        );
+
+    Provider.of<UserProvider>(context, listen: false).setUser(user);
+    
+    if (role == 2) {
+      Navigator.pushNamed(context, '/admin/home');
+    } else if (role == 1) {
+      Navigator.pushNamed(context, '/campsite_owner/home');
+    } else {
+      Navigator.pushNamed(context, '/camper/home');
+    }
+  }
+
+  Future<int> _showRoleSelectionDialog() async {
+  int selectedRoleIndex = 3;
+
+  await showDialog(
+    context: context,
+    builder: (BuildContext context) {
+      return AlertDialog(
+        title: Text('Select Role'),
+        content: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            ListTile(
+              title: Text('Camper'),
+              onTap: () {
+                selectedRoleIndex = 3;
+                Navigator.of(context).pop();
+              },
+            ),
+            ListTile(
+              title: Text('Campsite Owner'),
+              onTap: () {
+                selectedRoleIndex = 1;
+                Navigator.of(context).pop();
+              },
+            ),
+          ],
+        ),
+      );
+    },
+  );
+
+  return selectedRoleIndex;
+}
+
+  void _showErrorDialog(String errorText) {
+    showDialog(
+        context: context,
+        barrierDismissible: false,
+        builder: (BuildContext context) {
+          return new AlertDialog(
+            title: new Text("Error"),
+            content: new SingleChildScrollView(
+              child: new ListBody(
+                children: [
+                  new Text(errorText),
+                ],
+              ),
+            ),
+            actions: [
+              new TextButton(
+                child: new Text("OK"),
+                onPressed: () {
+                  Navigator.of(context).pop();
+                },
+              ),
+            ],
+          );
+        });
   }
 
   Widget build(BuildContext context) {
@@ -117,70 +266,11 @@ class _LoginScreenState extends State<LoginScreen> {
                   ),
                 ],
               ),
+              SocialSignIn(googleSignInCallback: () => googleSignIn(),),
             ],
           ),
         ),
       ),
     );
-  }
-
-  void login() async {
-    if (_formKey.currentState!.validate()) {
-      _formKey.currentState!.save();
-
-      dynamic result =
-          await _auth.loginUserWithEmailAndPassword(_email, _password);
-
-      if (result == null) {
-        _showErrorDialog();
-      } else {
-        dynamic userData = await databaseService.retrieveUsers(_email);
-
-        int role = userData['role'];
-        
-        UserModel user = UserModel(
-            userId: userData['userId'],
-            email: userData['email'],
-            fullName: userData['fullName'],
-            role: userData['role'],
-            );
-
-        Provider.of<UserProvider>(context, listen: false).setUser(user);
-        
-        if (role == 2) {
-          Navigator.pushNamed(context, '/admin/home');
-        } else if (role == 1) {
-          Navigator.pushNamed(context, '/campsite_owner/home');
-        } else {
-          Navigator.pushNamed(context, '/camper/home');
-        }
-      }
-    }
-  }
-
-  void _showErrorDialog() {
-    showDialog(
-        context: context,
-        barrierDismissible: false,
-        builder: (BuildContext context) {
-          return new AlertDialog(
-            title: new Text("Error"),
-            content: new SingleChildScrollView(
-              child: new ListBody(
-                children: [
-                  new Text("Invalid email/password! Please try again!"),
-                ],
-              ),
-            ),
-            actions: [
-              new TextButton(
-                child: new Text("OK"),
-                onPressed: () {
-                  Navigator.of(context).pop();
-                },
-              ),
-            ],
-          );
-        });
   }
 }

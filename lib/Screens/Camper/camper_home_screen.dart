@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 
@@ -52,6 +53,16 @@ class _CamperHomeScreenState extends State<CamperHomeScreen> {
     return Scaffold(
       appBar: AppBar(
         title: const Text('Camper Dashboard'),
+        actions: <Widget>[
+          IconButton(
+            icon: const Icon(Icons.logout),
+            tooltip: 'Sign Out',
+            onPressed: () {
+              FirebaseAuth.instance.signOut();
+              Navigator.pushNamed(context, '/login');
+            },
+          )
+        ],
       ),
       drawer: Drawer(
         child: ListView(

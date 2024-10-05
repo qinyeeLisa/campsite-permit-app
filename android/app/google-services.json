@@ -12,7 +12,20 @@
           "package_name": "com.example.cpas"
         }
       },
-      "oauth_client": [],
+      "oauth_client": [
+        {
+          "client_id": "708697230446-itih1nc604gbfh6pieimdoj91dj8ge4m.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.cpas",
+            "certificate_hash": "a33c284d4d8a9964145fe9e3a422ce70660cfe0e"
+          }
+        },
+        {
+          "client_id": "708697230446-ovbqtvr4m9pi0hos0bm5q2lnp2c1g7b8.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
       "api_key": [
         {
           "current_key": "AIzaSyAScVvQ1e-mI3ogXVVICO4TC-VfneZKCmA"
@@ -20,7 +33,12 @@
       ],
       "services": {
         "appinvite_service": {
-          "other_platform_oauth_client": []
+          "other_platform_oauth_client": [
+            {
+              "client_id": "708697230446-ovbqtvr4m9pi0hos0bm5q2lnp2c1g7b8.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
         }
       }
     }
