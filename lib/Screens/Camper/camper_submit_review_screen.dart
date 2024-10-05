@@ -1,6 +1,9 @@
 import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
+import 'package:provider/provider.dart';
+
+import '../../services/user_provider.dart';
 
 class CamperSubmitReviewScreen extends StatefulWidget {
   const CamperSubmitReviewScreen({super.key});
@@ -27,12 +30,16 @@ class _CamperSubmitReviewScreenState extends State<CamperSubmitReviewScreen> {
     if (_formKey.currentState!.validate()) {
       final String description = _descriptionController.text;
       final int rating = _selectedRating!;
+      final user = Provider.of<UserProvider>(context, listen: false).user;
+      int userId = user?.userId ?? 0;
 
       // Review data
       final Map<String, dynamic> reviewData = {
-        "userId": 3, // Replace this with dynamic userId if needed
+        "userId": userId, // Replace this with dynamic userId if needed
         "description": description,
         "rating": rating,
+        'CreatedBy': user?.fullName,
+        'UpdatedBy': user?.fullName
       };
 
       // API URL
