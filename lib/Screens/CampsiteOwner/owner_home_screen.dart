@@ -23,7 +23,7 @@ class _OwnerHomeScreenState extends State<OwnerHomeScreen> {
   // Fetch permit applications from API
   Future<void> _fetchPermitApplications() async {
     final url = 'https://d24mqpbjn8370i.cloudfront.net/permitapi/permit';
-    // 'https://eqqd1j4q2j.execute-api.ap-southeast-1.amazonaws.com/dev/permitapi/permit';
+
     try {
       final response = await http.get(Uri.parse(url));
       if (response.statusCode == 200) {

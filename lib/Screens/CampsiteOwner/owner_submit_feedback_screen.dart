@@ -37,12 +37,13 @@ class _OwnerSubmitFeedbackScreenState extends State<OwnerSubmitFeedbackScreen> {
         "userId": userId, // Replace this with dynamic userId if needed
         "title": title,
         "description": description,
+        'CreatedBy': user?.fullName,
+        'UpdatedBy': user?.fullName
       };
 
       // API URL
       const String apiUrl =
-          'https://d24mqpbjn8370i.cloudfront.net/feedbackapi/feedback/AddFeedback/';
-      // "https://eqqd1j4q2j.execute-api.ap-southeast-1.amazonaws.com/dev/feedbackapi/feedback/AddFeedback/";
+          "https://d24mqpbjn8370i.cloudfront.net/feedbackapi/feedback/AddFeedback/";
 
       try {
         // Make the POST request

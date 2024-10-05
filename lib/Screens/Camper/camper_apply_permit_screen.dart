@@ -96,7 +96,6 @@ class _CamperApplyPermitScreenState extends State<CamperApplyPermitScreen> {
 
     const url =
         'https://d24mqpbjn8370i.cloudfront.net/permitapi/permit/createpermit';
-    // 'https://eqqd1j4q2j.execute-api.ap-southeast-1.amazonaws.com/dev/permitapi/permit/createpermit';
 
     try {
       // Send the POST request
