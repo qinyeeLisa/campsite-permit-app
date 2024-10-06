@@ -1,3 +1,4 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
 class CamperEnquireStatusScreen extends StatefulWidget {
@@ -14,6 +15,16 @@ class _CamperEnquireStatusScreenState extends State<CamperEnquireStatusScreen> {
     return Scaffold(
       appBar: AppBar(
         title: const Text("Enquiry Status"),
+        actions: <Widget>[
+          IconButton(
+            icon: const Icon(Icons.logout),
+            tooltip: 'Sign Out',
+            onPressed: () {
+              FirebaseAuth.instance.signOut();
+              Navigator.pushNamed(context, '/login');
+            },
+          )
+        ],
       ),
     );
   }

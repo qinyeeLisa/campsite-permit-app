@@ -1,8 +1,11 @@
 import 'dart:convert';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:camplified/services/user_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:provider/provider.dart';
+
+import '../../services/user_provider.dart';
 
 class CamperHomeScreen extends StatefulWidget {
   const CamperHomeScreen({super.key});
@@ -69,6 +72,16 @@ class _CamperHomeScreenState extends State<CamperHomeScreen> {
     return Scaffold(
       appBar: AppBar(
         title: const Text('Camper Dashboard'),
+        actions: <Widget>[
+          IconButton(
+            icon: const Icon(Icons.logout),
+            tooltip: 'Sign Out',
+            onPressed: () {
+              FirebaseAuth.instance.signOut();
+              Navigator.pushNamed(context, '/login');
+            },
+          )
+        ],
       ),
       drawer: Drawer(
         child: ListView(
@@ -90,6 +103,7 @@ class _CamperHomeScreenState extends State<CamperHomeScreen> {
               leading: const Icon(Icons.dashboard),
               title: const Text('Camper Dashboard'),
               onTap: () {
+                // Close the drawer and navigate to the Camper Dashboard
                 Navigator.pop(context);
                 Navigator.pushNamed(context, '/camper/home');
               },

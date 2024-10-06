@@ -1,4 +1,5 @@
 import 'dart:convert'; // For JSON handling
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:provider/provider.dart';
@@ -145,6 +146,16 @@ class _OwnerHomeScreenState extends State<OwnerHomeScreen> {
     return Scaffold(
       appBar: AppBar(
         title: const Text("Campsite Owner Home"),
+        actions: <Widget>[
+          IconButton(
+            icon: const Icon(Icons.logout),
+            tooltip: 'Sign Out',
+            onPressed: () {
+              FirebaseAuth.instance.signOut();
+              Navigator.pushNamed(context, '/login');
+            },
+          )
+        ],
       ),
       drawer: Drawer(
         child: ListView(

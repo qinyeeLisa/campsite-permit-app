@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:provider/provider.dart';
@@ -83,6 +84,16 @@ class _CamperSubmitReviewScreenState extends State<CamperSubmitReviewScreen> {
     return Scaffold(
       appBar: AppBar(
         title: const Text("Submit Review"),
+        actions: <Widget>[
+          IconButton(
+            icon: const Icon(Icons.logout),
+            tooltip: 'Sign Out',
+            onPressed: () {
+              FirebaseAuth.instance.signOut();
+              Navigator.pushNamed(context, '/login');
+            },
+          )
+        ],
       ),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
