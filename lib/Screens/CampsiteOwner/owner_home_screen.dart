@@ -1,6 +1,8 @@
 import 'dart:convert'; // For JSON handling
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
+import 'package:provider/provider.dart';
+import '../../services/user_provider.dart';
 import 'owner_submit_feedback_screen.dart';
 
 class OwnerHomeScreen extends StatefulWidget {
@@ -60,13 +62,15 @@ class _OwnerHomeScreenState extends State<OwnerHomeScreen> {
   // Approve permit application
   Future<void> _approveApplication(String permitId, String userId) async {
     final url = 'https://d24mqpbjn8370i.cloudfront.net/approveapi/approve/';
-    // 'https://eqqd1j4q2j.execute-api.ap-southeast-1.amazonaws.com/dev/approveapi/approve/';
+    final user = Provider.of<UserProvider>(context, listen: false).user;
+    //int userId = user?.userId ?? 0;
 
     try {
       // Create the PermitInfoDto payload
       final Map<String, dynamic> permitInfo = {
         'Id': int.parse(permitId),
         'UserId': int.parse(userId),
+        'UpdatedBy': user?.fullName
       };
 
       // Send POST request with the permitInfo as JSON
@@ -99,13 +103,15 @@ class _OwnerHomeScreenState extends State<OwnerHomeScreen> {
   Future<void> _rejectApplication(String permitId, String userId) async {
     final url =
         'https://d24mqpbjn8370i.cloudfront.net/approveapi/approve/rejectpermit';
-    //'https://eqqd1j4q2j.execute-api.ap-southeast-1.amazonaws.com/dev/approveapi/approve/rejectpermit';
+
+    final user = Provider.of<UserProvider>(context, listen: false).user;
 
     try {
       // Create the PermitInfoDto payload
       final Map<String, dynamic> permitInfo = {
         'Id': int.parse(permitId),
         'UserId': int.parse(userId),
+        'UpdatedBy': user?.fullName
       };
 
       // Send POST request with the permitInfo as JSON
