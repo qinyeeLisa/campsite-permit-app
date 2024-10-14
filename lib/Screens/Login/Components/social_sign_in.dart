@@ -11,6 +11,7 @@ class SocialSignIn extends StatelessWidget {
     Key? key, this.googleSignInCallback,
   }) : super(key: key);
 
+//temp9
   @override
   Widget build(BuildContext context) {
     return Column(
@@ -19,10 +20,10 @@ class SocialSignIn extends StatelessWidget {
         Row(
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
-            SocialIcon(
-              iconSrc: "assets/icons/facebook.svg",
-              press: () {},
-            ),
+            // SocialIcon(
+            //   iconSrc: "assets/icons/facebook.svg",
+            //   press: () {},
+            // ),
             SocialIcon(
               iconSrc: "assets/icons/logo-google.svg",
               press: () => googleSignInCallback?.call(),
