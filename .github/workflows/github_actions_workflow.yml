@@ -23,9 +23,6 @@ jobs:
           distribution: 'temurin'
           java-version: '17'
 
-      - name: Set JAVA_HOME
-        run: echo "JAVA_HOME is set to $JAVA_HOME"
-
       - name: SonarCloud Scan (Docker)
         run: |
           docker run \
@@ -37,3 +34,16 @@ jobs:
             -Dsonar.projectKey=qinyeeLisa_campsite-permit-app \
             -Dsonar.host.url=https://sonarcloud.io \
             -Dsonar.login=${{ secrets.SONAR_TOKEN }}
+
+      - name: Set commit status to success or failure
+        uses: actions/github-script@v6
+        with:
+          script: |
+            const { context } = github;
+            const conclusion = '${{ job.status }}' === 'success' ? 'success' : 'failure';
+            await github.repos.createCommitStatus({
+              ...context.repo,
+              sha: context.sha,
+              state: conclusion,
+              context: 'SonarCloud Scan'
+            });
