@@ -47,3 +47,4 @@ jobs:
               state: conclusion,
               context: 'SonarCloud Scan'
             });
+          github-token: ${{ secrets.GIT_TOKEN }}
