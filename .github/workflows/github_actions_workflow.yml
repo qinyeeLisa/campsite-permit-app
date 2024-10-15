@@ -30,8 +30,8 @@ jobs:
             -v $(pwd):/usr/src \
             sonarsource/sonar-scanner-cli \
             sonar-scanner \
-            -Dsonar.organization=cpas-campsite-app \
-            -Dsonar.projectKey=qinyeeLisa_campsite-permit-ap \
+            -Dsonar.organization=cpas-campsite-ap \
+            -Dsonar.projectKey=qinyeeLisa_campsite-permit-app \
             -Dsonar.host.url=https://sonarcloud.io \
             -Dsonar.login=${{ secrets.SONAR_TOKEN }}
 
