@@ -39,11 +39,10 @@ jobs:
         uses: actions/github-script@v6
         with:
           script: |
-            const { context } = github;
             const conclusion = '${{ job.status }}' === 'success' ? 'success' : 'failure';
             await github.repos.createCommitStatus({
-              ...context.repo,
-              sha: context.sha,
+              ...github.context.repo,
+              sha: github.context.sha,
               state: conclusion,
               context: 'SonarCloud Scan'
             });
