@@ -40,9 +40,10 @@ jobs:
         with:
           script: |
             const conclusion = '${{ job.status }}' === 'success' ? 'success' : 'failure';
-            await github.repos.createCommitStatus({
-              ...github.context.repo,
-              sha: github.context.sha,
+            await github.rest.repos.createCommitStatus({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              sha: context.sha,
               state: conclusion,
               context: 'SonarCloud Scan'
             });
