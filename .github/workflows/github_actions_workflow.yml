@@ -49,7 +49,7 @@ jobs:
         uses: actions/github-script@v6
         with:
           script: |
-            const conclusion = '${{ job.status }}' === 'success' ? 'success' : 'failure';
+            const conclusion = 'failure';
             await github.rest.repos.createCommitStatus({
               owner: context.repo.owner,
               repo: context.repo.repo,
