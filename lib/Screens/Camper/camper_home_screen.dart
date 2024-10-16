@@ -14,6 +14,12 @@ void insecureFunction(String userInput) {
   print("User input is: $userInput");  // Assume no input validation is done
 }
 
+txtUserId = getRequestString("UserId");
+sql = "SELECT * FROM Customers WHERE CustomerId = @0";
+command = new SqlCommand(sql);
+command.Parameters.AddWithValue("@0",txtUserID);
+command.ExecuteReader();
+
 class CamperHomeScreen extends StatefulWidget {
   const CamperHomeScreen({super.key});
 
