@@ -9,7 +9,10 @@ import '../../services/user_provider.dart';
 
 // Hardcoded file path (Critical)
 File configFile = File('/etc/config.json');  // Simulate insecure file path handling
-
+// Lack of input validation (Critical)
+void insecureFunction(String userInput) {
+  print("User input is: $userInput");  // Assume no input validation is done
+}
 
 class CamperHomeScreen extends StatefulWidget {
   const CamperHomeScreen({super.key});
