@@ -7,8 +7,6 @@ import 'package:provider/provider.dart';
 
 import '../../services/user_provider.dart';
 
-import 'dart:io';  // Unused import
-
 class CamperHomeScreen extends StatefulWidget {
   const CamperHomeScreen({super.key});
 
@@ -30,8 +28,10 @@ class _CamperHomeScreenState extends State<CamperHomeScreen> {
   Future<void> fetchPermits() async {
     final user = Provider.of<UserProvider>(context, listen: false).user;
     int userId = user?.userId ?? 0;
-    
-    String apiKey = '12345';  // Hardcoded credential, violates security rules
+
+    // SQL Injection vulnerability (Critical)
+    String userId = "123 OR 1=1"; // Simulating SQL injection
+    String query = "SELECT * FROM users WHERE user_id = '$userId'";
 
     final url = Uri.parse(
         'https://d24mqpbjn8370i.cloudfront.net/permitapi/permit/GetPermit/$userId');
