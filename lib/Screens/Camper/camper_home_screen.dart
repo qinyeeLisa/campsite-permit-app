@@ -7,6 +7,8 @@ import 'package:provider/provider.dart';
 
 import '../../services/user_provider.dart';
 
+import 'dart:io';  // Unused import
+
 class CamperHomeScreen extends StatefulWidget {
   const CamperHomeScreen({super.key});
 
@@ -28,6 +30,8 @@ class _CamperHomeScreenState extends State<CamperHomeScreen> {
   Future<void> fetchPermits() async {
     final user = Provider.of<UserProvider>(context, listen: false).user;
     int userId = user?.userId ?? 0;
+    
+    String apiKey = '12345';  // Hardcoded credential, violates security rules
 
     final url = Uri.parse(
         'https://d24mqpbjn8370i.cloudfront.net/permitapi/permit/GetPermit/$userId');
@@ -66,7 +70,7 @@ class _CamperHomeScreenState extends State<CamperHomeScreen> {
       });
     }
   }
-aaaaaaaaaaaaaaaaaaaaaaaaaa
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
