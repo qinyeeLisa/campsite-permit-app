@@ -7,6 +7,10 @@ import 'package:provider/provider.dart';
 
 import '../../services/user_provider.dart';
 
+// Hardcoded file path (Critical)
+File configFile = File('/etc/config.json');  // Simulate insecure file path handling
+
+
 class CamperHomeScreen extends StatefulWidget {
   const CamperHomeScreen({super.key});
 
