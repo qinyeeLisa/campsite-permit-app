@@ -29,15 +29,6 @@ class _CamperHomeScreenState extends State<CamperHomeScreen> {
     final user = Provider.of<UserProvider>(context, listen: false).user;
     int userId = user?.userId ?? 0;
 
-    // SQL Injection vulnerability (Critical)
-    userId = "123 OR 1=1"; // Simulating SQL injection
-    String query = "SELECT * FROM users WHERE user_id = '$userId'";
-
-    // Null dereference (Blocker)
-    String? unsafeString;
-    int stringLength = unsafeString.length;  // This will throw a null dereference error
-
-
     final url = Uri.parse(
         'https://d24mqpbjn8370i.cloudfront.net/permitapi/permit/GetPermit/$userId');
     try {
