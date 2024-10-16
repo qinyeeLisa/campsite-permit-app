@@ -1,61 +1,61 @@
-name: "SonarCloud Scan with GitHub Actions"
+# name: "SonarCloud Scan with GitHub Actions"
 
-on:
-  push:
-    branches: [ "main" ]
-  pull_request:
-    branches: [ "main" ]
-  workflow_dispatch:
+# on:
+#   push:
+#     branches: [ "main" ]
+#   pull_request:
+#     branches: [ "main" ]
+#   workflow_dispatch:
 
-jobs:
-  build:
-    runs-on: ubuntu-latest
+# jobs:
+#   build:
+#     runs-on: ubuntu-latest
 
-    steps:
-      - name: Checkout Code
-        uses: actions/checkout@v4
-        with:
-          fetch-depth: 0
+#     steps:
+#       - name: Checkout Code
+#         uses: actions/checkout@v4
+#         with:
+#           fetch-depth: 0
 
-      - name: Set up JDK 17
-        uses: actions/setup-java@v3
-        with:
-          distribution: 'temurin'
-          java-version: '17'
+#       - name: Set up JDK 17
+#         uses: actions/setup-java@v3
+#         with:
+#           distribution: 'temurin'
+#           java-version: '17'
 
-      - name: SonarCloud Scan (Docker)
-        run: |
-          docker run \
-            -e SONAR_TOKEN=${{ secrets.SONAR_TOKEN }} \
-            -v $(pwd):/usr/src \
-            sonarsource/sonar-scanner-cli \
-            sonar-scanner \
-            -Dsonar.organization=cpas-campsite-app \
-            -Dsonar.projectKey=qinyeeLisa_campsite-permit-app \
-            -Dsonar.host.url=https://sonarcloud.io \
-            -Dsonar.login=${{ secrets.SONAR_TOKEN }}
+#       - name: SonarCloud Scan (Docker)
+#         run: |
+#           docker run \
+#             -e SONAR_TOKEN=${{ secrets.SONAR_TOKEN }} \
+#             -v $(pwd):/usr/src \
+#             sonarsource/sonar-scanner-cli \
+#             sonar-scanner \
+#             -Dsonar.organization=cpas-campsite-app \
+#             -Dsonar.projectKey=qinyeeLisa_campsite-permit-app \
+#             -Dsonar.host.url=https://sonarcloud.io \
+#             -Dsonar.login=${{ secrets.SONAR_TOKEN }}
       
-      - name: Check SonarCloud Quality Gate
-        run: |
-          # Assuming you have set up SonarCloud API token in secrets
-          RESPONSE=$(curl -s -X GET -H "Authorization: Basic ${{ secrets.SONAR_TOKEN }}" "https://sonarcloud.io/api/qualitygates/project_status?projectKey=qinyeeLisa_campsite-permit-app")
-          # Check if the quality gate status is "ERROR" or if there are critical/blocker issues
-          if echo "$RESPONSE" | grep -q '"status":"ERROR"'; then
-            echo "SonarCloud quality gate failed."
-            exit 1  # Fail the job
-          fi
+#       - name: Check SonarCloud Quality Gate
+#         run: |
+#           # Assuming you have set up SonarCloud API token in secrets
+#           RESPONSE=$(curl -s -X GET -H "Authorization: Basic ${{ secrets.SONAR_TOKEN }}" "https://sonarcloud.io/api/qualitygates/project_status?projectKey=qinyeeLisa_campsite-permit-app")
+#           # Check if the quality gate status is "ERROR" or if there are critical/blocker issues
+#           if echo "$RESPONSE" | grep -q '"status":"ERROR"'; then
+#             echo "SonarCloud quality gate failed."
+#             exit 1  # Fail the job
+#           fi
 
-      - name: Set commit status to success or failure
-        uses: actions/github-script@v6
-        with:
-          script: |
-            const conclusion = 'failure';
-            await github.rest.repos.createCommitStatus({
-              owner: context.repo.owner,
-              repo: context.repo.repo,
-              sha: context.sha,
-              state: conclusion,
-              context: 'SonarCloud Scan'
-            });
-            console.log(`Commit status set to: ${conclusion}`);
-          github-token: ${{ secrets.GIT_TOKEN }}
+#       - name: Set commit status to success or failure
+#         uses: actions/github-script@v6
+#         with:
+#           script: |
+#             const conclusion = '${{ job.status }}' === 'success' ? 'success' : 'failure';
+#             await github.rest.repos.createCommitStatus({
+#               owner: context.repo.owner,
+#               repo: context.repo.repo,
+#               sha: context.sha,
+#               state: conclusion,
+#               context: 'SonarCloud Scan'
+#             });
+#             console.log(`Commit status set to: ${conclusion}`);
+#           github-token: ${{ secrets.GIT_TOKEN }}
