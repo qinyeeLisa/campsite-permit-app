@@ -12,7 +12,7 @@ class AuthService{
       return results.user;
     }
     catch(e){
-      log("Something went wrong.");
+      log("Something went wrong. $e");
     }
     return null;
   }
@@ -20,10 +20,21 @@ class AuthService{
   Future<User?> loginUserWithEmailAndPassword(String email, String password) async{
     try{
       final results = await _auth.signInWithEmailAndPassword(email: email, password: password);
+      ////////////below code is for jwt token
+      final user = results.user;
+      if (user != null) {
+        // Get the JWT token
+        final idToken = await user.getIdToken();
+        // Print the JWT token to the console
+        log("JWT Token: $idToken");
+        //return idToken; // Return the JWT token
+      }
+      ////////////
+
       return results.user;
     }
     catch(e){
-      log("Something went wrong.");
+      log("Something went wrong. $e");
     }
     return null;
   }
@@ -33,7 +44,7 @@ class AuthService{
       await _auth.signOut();
     }
     catch(e){
-      log("Something went wrong.");
+      log("Something went wrong. $e");
     }
   }
 
@@ -60,9 +71,18 @@ class AuthService{
       );
 
       // Once signed in, return the UserCredential
+      //below for jwt token
+     /* final userCredential = await _auth.signInWithCredential(credential);
+      final user = userCredential.user;
+
+      if (user != null) {
+        // Get the JWT token
+        final idToken = await user.getIdToken();
+        return idToken; // Return the JWT token
+      }*/
       return await _auth.signInWithCredential(credential);
     } catch (e) {
-      log("Something went wrong.");
+      log("Something went wrong. $e");
     }
     return null;
 
