@@ -31,7 +31,7 @@ class _CamperSubmitReviewScreenState extends State<CamperSubmitReviewScreen> {
     if (_formKey.currentState!.validate()) {
       final String description = _descriptionController.text;
       final int rating = _selectedRating!;
-      final user = Provider.of<UserProvider>(context, listen: false).user;
+      final user = await Provider.of<UserProvider>(context, listen: false).getUser();
       int userId = user?.userId ?? 0;
 
       // Review data

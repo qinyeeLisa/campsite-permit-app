@@ -122,7 +122,7 @@ class _LoginScreenState extends State<LoginScreen> {
         role: userData['role'],
         );
 
-    Provider.of<UserProvider>(context, listen: false).setUser(user);
+    await Provider.of<UserProvider>(context, listen: false).setUser(user);
     
     if (role == 2) {
       Navigator.pushNamed(context, '/admin/home');

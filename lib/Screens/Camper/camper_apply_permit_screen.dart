@@ -80,7 +80,7 @@ class _CamperApplyPermitScreenState extends State<CamperApplyPermitScreen> {
       return;
     }
 
-    final user = Provider.of<UserProvider>(context, listen: false).user;
+    final user = await Provider.of<UserProvider>(context, listen: false).getUser();
     int userId = user?.userId ?? 0;
 
     // Prepare data for submission

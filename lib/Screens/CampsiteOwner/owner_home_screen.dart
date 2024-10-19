@@ -63,7 +63,7 @@ class _OwnerHomeScreenState extends State<OwnerHomeScreen> {
   // Approve permit application
   Future<void> _approveApplication(String permitId, String userId) async {
     final url = 'https://d24mqpbjn8370i.cloudfront.net/approveapi/approve/';
-    final user = Provider.of<UserProvider>(context, listen: false).user;
+    final user = await Provider.of<UserProvider>(context, listen: false).getUser();
     //int userId = user?.userId ?? 0;
 
     try {
