@@ -36,7 +36,9 @@ class _CamperHomeScreenState extends State<CamperHomeScreen> {
     print(idToken);
 
     final url = Uri.parse(
-        'https://d24mqpbjn8370i.cloudfront.net/permitapi/permit/GetPermit/$userId');
+        'https://eqqd1j4q2j.execute-api.ap-southeast-1.amazonaws.com/dev/permitapi/permit/GetPermit/$userId'
+        //'https://d24mqpbjn8370i.cloudfront.net/permitapi/permit/GetPermit/$userId'
+    );
     try {
       //final response = await http.get(url);
       final response = await http.get(
@@ -83,7 +85,7 @@ class _CamperHomeScreenState extends State<CamperHomeScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Camper Dashboard Test'),
+        title: const Text('Camper Dashboard'),
         actions: <Widget>[
           IconButton(
             icon: const Icon(Icons.logout),
