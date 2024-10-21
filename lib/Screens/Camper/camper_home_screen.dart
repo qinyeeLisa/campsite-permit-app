@@ -29,10 +29,20 @@ class _CamperHomeScreenState extends State<CamperHomeScreen> {
     final user = await Provider.of<UserProvider>(context, listen: false).getUser();
     int userId = user?.userId ?? 0;
 
+    // Get Firebase JWT token
+    final firebaseUser = FirebaseAuth.instance.currentUser;
+    final idToken = await firebaseUser?.getIdToken();
+
     final url = Uri.parse(
         'https://d24mqpbjn8370i.cloudfront.net/permitapi/permit/GetPermit/$userId');
     try {
-      final response = await http.get(url);
+      //final response = await http.get(url);
+      final response = await http.get(
+        url,
+        headers: {
+          'Authorization': 'Bearer $idToken',  // Add JWT token to Authorization header
+        },
+      );
 
       if (response.statusCode == 200) {
         final List<dynamic> permitData = json.decode(response.body);
