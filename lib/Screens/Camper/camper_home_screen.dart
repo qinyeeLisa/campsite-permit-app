@@ -32,6 +32,7 @@ class _CamperHomeScreenState extends State<CamperHomeScreen> {
     // Get Firebase JWT token
     final firebaseUser = FirebaseAuth.instance.currentUser;
     final idToken = await firebaseUser?.getIdToken();
+    print(idToken);
 
     final url = Uri.parse(
         'https://d24mqpbjn8370i.cloudfront.net/permitapi/permit/GetPermit/$userId');
@@ -81,7 +82,7 @@ class _CamperHomeScreenState extends State<CamperHomeScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Camper Dashboard'),
+        title: const Text('Camper Dashboard Test'),
         actions: <Widget>[
           IconButton(
             icon: const Icon(Icons.logout),
