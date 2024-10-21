@@ -32,6 +32,7 @@ class _CamperHomeScreenState extends State<CamperHomeScreen> {
     // Get Firebase JWT token
     final firebaseUser = FirebaseAuth.instance.currentUser;
     final idToken = await firebaseUser?.getIdToken();
+    print("JWTToken");
     print(idToken);
 
     final url = Uri.parse(
