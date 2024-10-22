@@ -32,6 +32,14 @@ class _CamperHomeScreenState extends State<CamperHomeScreen> {
     // Get Firebase JWT token
     final firebaseUser = FirebaseAuth.instance.currentUser;
     final idToken = await firebaseUser?.getIdToken();
+
+    if (firebaseUser == null) {
+      throw Exception('User is not authenticated');
+    }
+
+    if (idToken == null) {
+      throw Exception('Unable to retrieve Firebase ID Token');
+    }
     print("JWTToken");
     print(idToken);
 
@@ -45,6 +53,7 @@ class _CamperHomeScreenState extends State<CamperHomeScreen> {
         url,
         headers: {
           'Authorization': 'Bearer $idToken',  // Add JWT token to Authorization header
+          'Content-Type': 'application/json',
         },
       );
 
