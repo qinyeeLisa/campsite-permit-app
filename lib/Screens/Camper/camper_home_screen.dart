@@ -53,7 +53,7 @@ class _CamperHomeScreenState extends State<CamperHomeScreen> {
         url,
         headers: {
           'Authorization': 'Bearer $idToken',  // Add JWT token to Authorization header
-          'Content-Type': 'application/json',
+          //'Content-Type': 'application/json',
         },
       );
 
