@@ -24,13 +24,33 @@ class _CamperSearchCampsitesScreenState
   }
 
   Future<void> fetchCampsites() async {
+
+    // Get Firebase JWT token
+    final firebaseUser = FirebaseAuth.instance.currentUser;
+    final idToken = await firebaseUser?.getIdToken();
+
+    if (firebaseUser == null) {
+      throw Exception('User is not authenticated');
+    }
+
+    if (idToken == null) {
+      throw Exception('Unable to retrieve Firebase ID Token');
+    }
+
     final url = Uri.parse(
         'https://00xjqmjhij.execute-api.ap-southeast-1.amazonaws.com/dev2/campsitesapi/campsites/'
         //'https://d24mqpbjn8370i.cloudfront.net/campsitesapi/campsites/'
         // 'https://eqqd1j4q2j.execute-api.ap-southeast-1.amazonaws.com/dev/campsitesapi/campsites/'
         );
     try {
-      final response = await http.get(url);
+      //final response = await http.get(url);
+      final response = await http.get(
+        url,
+        headers: {
+          'Authorization': 'Bearer $idToken',  // Add JWT token to Authorization header
+          //'Content-Type': 'application/json',
+        },
+      );
 
       if (response.statusCode == 200) {
         final List<dynamic> campsiteData = json.decode(response.body);
