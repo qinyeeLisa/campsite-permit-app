@@ -49,8 +49,8 @@ class _CamperSearchCampsitesScreenState
         headers: {
           'Authorization': 'Bearer $idToken',  // Add JWT token to Authorization header
           'Content-Type': 'application/json',
-          'Access-Control-Allow-Origin': "*", // Required for CORS support to work
-          'Access-Control-Allow-Credentials': "true", // Required for cookies, authorization headers with HTTPS
+          'Access-Control-Allow-Origin': '*', // Required for CORS support to work
+          'Access-Control-Allow-Credentials': 'true', // Required for cookies, authorization headers with HTTPS
         },
       );
 
