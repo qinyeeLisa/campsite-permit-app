@@ -23,18 +23,30 @@ class _CamperSearchCampsitesScreenState
     fetchCampsites();
   }
 
+  Future<String?> fetchApiKey() async {
+    final url = Uri.parse('https://eqqd1j4q2j.execute-api.ap-southeast-1.amazonaws.com/dev/fetchapikey/'); // Your API Gateway URL here
+    try {
+      final response = await http.get(url);
+
+      if (response.statusCode == 200) {
+        final data = json.decode(response.body);
+        return data['apiKey'];
+      } else {
+        throw Exception('Failed to load API key');
+      }
+    } catch (e) {
+      print('Error fetching API key: $e');
+      return null; // or handle error accordingly
+    }
+  }
+
   Future<void> fetchCampsites() async {
 
-    // Get Firebase JWT token
-    final firebaseUser = FirebaseAuth.instance.currentUser;
-    final idToken = await firebaseUser?.getIdToken();
+    final apiKey = await fetchApiKey(); // Get the API key
 
-    if (firebaseUser == null) {
-      throw Exception('User is not authenticated');
-    }
-
-    if (idToken == null) {
-      throw Exception('Unable to retrieve Firebase ID Token');
+    if (apiKey == null) {
+      print('API key retrieval failed.');
+      return;
     }
 
     final url = Uri.parse(
@@ -43,16 +55,14 @@ class _CamperSearchCampsitesScreenState
          'https://eqqd1j4q2j.execute-api.ap-southeast-1.amazonaws.com/dev/campsitesapi/campsites/'
         );
     try {
-      final response = await http.get(url);
-    /*  final response = await http.get(
+      //final response = await http.get(url);
+      final response = await http.get(
         url,
         headers: {
-          'Authorization': 'Bearer $idToken',  // Add JWT token to Authorization header
-          'Content-Type': 'application/json',
-          'Access-Control-Allow-Origin': '*', // Required for CORS support to work
-          'Access-Control-Allow-Credentials': 'true', // Required for cookies, authorization headers with HTTPS
+          'x-api-key': apiKey, // Include the API key in the headers
+
         },
-      );*/
+      );
 
       if (response.statusCode == 200) {
         final List<dynamic> campsiteData = json.decode(response.body);
