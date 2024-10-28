@@ -25,6 +25,26 @@ class _CamperHomeScreenState extends State<CamperHomeScreen> {
     fetchPermits();
   }
 
+  Future<String?> fetchApiKey() async {
+    final url = Uri.parse('https://eqqd1j4q2j.execute-api.ap-southeast-1.amazonaws.com/dev/fetchapikey/'); // Your API Gateway URL here
+    try {
+      final response = await http.get(url);
+
+      if (response.statusCode == 200) {
+        // Decode the response body first
+        final decodedBody = json.decode(response.body);
+        // Then access the inner body
+        final innerBody = json.decode(decodedBody['body']);
+        return innerBody['apiKey'];  // Access the actual API key
+      } else {
+        throw Exception('Failed to load API key');
+      }
+    } catch (e) {
+      print('Error fetching API key: $e');
+      return null; // or handle error accordingly
+    }
+  }
+
   Future<void> fetchPermits() async {
     final user = await Provider.of<UserProvider>(context, listen: false).getUser();
     int userId = user?.userId ?? 0;
@@ -43,16 +63,24 @@ class _CamperHomeScreenState extends State<CamperHomeScreen> {
     print("JWTToken");
     print(idToken);
 
+    final apiKey = await fetchApiKey(); // Get the API key
+    print(apiKey);
+
+    if (apiKey == null) {
+      print('API key retrieval failed.');
+      return;
+    }
+
     final url = Uri.parse(
-        //'https://eqqd1j4q2j.execute-api.ap-southeast-1.amazonaws.com/dev/permitapi/permit/GetPermit/$userId'
-        'https://d24mqpbjn8370i.cloudfront.net/permitapi/permit/GetPermit/$userId'
+        'https://eqqd1j4q2j.execute-api.ap-southeast-1.amazonaws.com/dev/permitapi/permit/GetPermit/$userId'
+        //'https://d24mqpbjn8370i.cloudfront.net/permitapi/permit/GetPermit/$userId'
     );
     try {
       //final response = await http.get(url);
       final response = await http.get(
         url,
         headers: {
-          'Authorization': 'Bearer $idToken',  // Add JWT token to Authorization header
+          'x-api-key': apiKey,
           //'Content-Type': 'application/json',
         },
       );

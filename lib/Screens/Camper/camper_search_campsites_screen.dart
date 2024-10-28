@@ -29,8 +29,11 @@ class _CamperSearchCampsitesScreenState
       final response = await http.get(url);
 
       if (response.statusCode == 200) {
-        final data = json.decode(response.body);
-        return data['apiKey'];
+        // Decode the response body first
+        final decodedBody = json.decode(response.body);
+        // Then access the inner body
+        final innerBody = json.decode(decodedBody['body']);
+        return innerBody['apiKey'];  // Access the actual API key
       } else {
         throw Exception('Failed to load API key');
       }
@@ -43,6 +46,7 @@ class _CamperSearchCampsitesScreenState
   Future<void> fetchCampsites() async {
 
     final apiKey = await fetchApiKey(); // Get the API key
+    print(apiKey);
 
     if (apiKey == null) {
       print('API key retrieval failed.');
@@ -60,7 +64,7 @@ class _CamperSearchCampsitesScreenState
         url,
         headers: {
           'x-api-key': apiKey, // Include the API key in the headers
-          'Access-Control-Allow-Origin': '*'
+          //'Access-Control-Allow-Origin': '*'
 
         },
       );
