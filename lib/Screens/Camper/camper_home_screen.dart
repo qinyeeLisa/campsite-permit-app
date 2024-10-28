@@ -60,7 +60,7 @@ class _CamperHomeScreenState extends State<CamperHomeScreen> {
     if (idToken == null) {
       throw Exception('Unable to retrieve Firebase ID Token');
     }
-    print("JWTToken");
+   /* print("JWTToken");
     print(idToken);
 
     final apiKey = await fetchApiKey(); // Get the API key
@@ -69,21 +69,21 @@ class _CamperHomeScreenState extends State<CamperHomeScreen> {
     if (apiKey == null) {
       print('API key retrieval failed.');
       return;
-    }
+    }*/
 
     final url = Uri.parse(
         //'https://eqqd1j4q2j.execute-api.ap-southeast-1.amazonaws.com/dev/permitapi/permit/GetPermit/$userId'
         'https://d24mqpbjn8370i.cloudfront.net/permitapi/permit/GetPermit/$userId'
     );
     try {
-      //final response = await http.get(url);
-      final response = await http.get(
+      final response = await http.get(url);
+     /* final response = await http.get(
         url,
         headers: {
           'x-api-key': apiKey,
           //'Content-Type': 'application/json',
         },
-      );
+      );*/
 
       if (response.statusCode == 200) {
         final List<dynamic> permitData = json.decode(response.body);
