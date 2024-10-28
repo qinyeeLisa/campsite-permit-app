@@ -38,13 +38,13 @@ class _CamperSearchCampsitesScreenState
     }
 
     final url = Uri.parse(
-        'https://00xjqmjhij.execute-api.ap-southeast-1.amazonaws.com/dev2/campsitesapi/campsites/'
-        //'https://d24mqpbjn8370i.cloudfront.net/campsitesapi/campsites/'
+        //'https://00xjqmjhij.execute-api.ap-southeast-1.amazonaws.com/dev2/campsitesapi/campsites/'
+        'https://d24mqpbjn8370i.cloudfront.net/campsitesapi/campsites/'
         // 'https://eqqd1j4q2j.execute-api.ap-southeast-1.amazonaws.com/dev/campsitesapi/campsites/'
         );
     try {
-      //final response = await http.get(url);
-      final response = await http.get(
+      final response = await http.get(url);
+    /*  final response = await http.get(
         url,
         headers: {
           'Authorization': 'Bearer $idToken',  // Add JWT token to Authorization header
@@ -52,7 +52,7 @@ class _CamperSearchCampsitesScreenState
           'Access-Control-Allow-Origin': '*', // Required for CORS support to work
           'Access-Control-Allow-Credentials': 'true', // Required for cookies, authorization headers with HTTPS
         },
-      );
+      );*/
 
       if (response.statusCode == 200) {
         final List<dynamic> campsiteData = json.decode(response.body);
