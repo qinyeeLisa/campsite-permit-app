@@ -60,6 +60,7 @@ class _CamperSearchCampsitesScreenState
         url,
         headers: {
           'x-api-key': apiKey, // Include the API key in the headers
+          'Access-Control-Allow-Origin': '*'
 
         },
       );
