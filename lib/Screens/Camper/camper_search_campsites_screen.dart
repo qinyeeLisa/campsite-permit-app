@@ -55,8 +55,8 @@ class _CamperSearchCampsitesScreenState
 
     final url = Uri.parse(
         //'https://00xjqmjhij.execute-api.ap-southeast-1.amazonaws.com/dev2/campsitesapi/campsites/'
-        //'https://d24mqpbjn8370i.cloudfront.net/campsitesapi/campsites/'
-         'https://eqqd1j4q2j.execute-api.ap-southeast-1.amazonaws.com/dev/campsitesapi/campsites/'
+        'https://d24mqpbjn8370i.cloudfront.net/campsitesapi/campsites/'
+         //'https://eqqd1j4q2j.execute-api.ap-southeast-1.amazonaws.com/dev/campsitesapi/campsites/'
         );
     try {
       //final response = await http.get(url);
