@@ -47,7 +47,7 @@ class _CamperSearchCampsitesScreenState
 
     final rawApiKey = await fetchApiKey(); // Get the API key
 
-    print(rawApiKey);
+    //print(rawApiKey);
 
     if (rawApiKey == null) {
       print('API key retrieval failed.');
@@ -56,9 +56,9 @@ class _CamperSearchCampsitesScreenState
 
     // Parse the JSON to extract only the API key value
     final apiKeyData = json.decode(rawApiKey); // Decode JSON if needed
-    final apiKey = apiKeyData['apiKey']; // Access the 'apiKey' value
+    final apiKey = apiKeyData['APIKey']; // Access the 'apiKey' value
 
-    print(apiKey); // Should print only the API key value as a string
+    //print(apiKey); // Should print only the API key value as a string
 
     final url = Uri.parse(
         //'https://00xjqmjhij.execute-api.ap-southeast-1.amazonaws.com/dev2/campsitesapi/campsites/'
@@ -71,7 +71,7 @@ class _CamperSearchCampsitesScreenState
         url,
         headers: {
           'x-api-key': apiKey, // Include the API key in the headers
-          //'Access-Control-Allow-Origin': '*'
+
 
         },
       );

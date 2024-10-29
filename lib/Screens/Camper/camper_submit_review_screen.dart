@@ -27,6 +27,26 @@ class _CamperSubmitReviewScreenState extends State<CamperSubmitReviewScreen> {
     super.dispose();
   }
 
+  Future<String?> fetchApiKey() async {
+    final url = Uri.parse('https://eqqd1j4q2j.execute-api.ap-southeast-1.amazonaws.com/dev/fetchapikey/'); // Your API Gateway URL here
+    try {
+      final response = await http.get(url);
+
+      if (response.statusCode == 200) {
+        // Decode the response body first
+        final decodedBody = json.decode(response.body);
+        // Then access the inner body
+        final innerBody = json.decode(decodedBody['body']);
+        return innerBody['apiKey'];  // Access the actual API key
+      } else {
+        throw Exception('Failed to load API key');
+      }
+    } catch (e) {
+      print('Error fetching API key: $e');
+      return null; // or handle error accordingly
+    }
+  }
+
   Future<void> _submitReview() async {
     if (_formKey.currentState!.validate()) {
       final String description = _descriptionController.text;
@@ -43,16 +63,29 @@ class _CamperSubmitReviewScreenState extends State<CamperSubmitReviewScreen> {
         'UpdatedBy': user?.fullName
       };
 
+      final rawApiKey = await fetchApiKey(); // Get the API key
+      //print(rawApiKey);
+      if (rawApiKey == null) {
+        print('API key retrieval failed.');
+        return;
+      }
+      // Parse the JSON to extract only the API key value
+      final apiKeyData = json.decode(rawApiKey); // Decode JSON if needed
+      final apiKey = apiKeyData['APIKey']; // Access the 'apiKey' value
+      //print(apiKey); // Should print only the API key value as a string
+
+
       // API URL
       const String apiUrl =
-          "https://d24mqpbjn8370i.cloudfront.net/ratingsapi/rating/AddRating/";
-
+          //"https://d24mqpbjn8370i.cloudfront.net/ratingsapi/rating/AddRating/";
+          'https://eqqd1j4q2j.execute-api.ap-southeast-1.amazonaws.com/dev/ratingsapi/rating/AddRating/';
       try {
         // Make the POST request
         final response = await http.post(
           Uri.parse(apiUrl),
           headers: {
             "Content-Type": "application/json",
+            'x-api-key': apiKey
           },
           body: jsonEncode(reviewData),
         );

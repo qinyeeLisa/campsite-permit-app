@@ -60,30 +60,37 @@ class _CamperHomeScreenState extends State<CamperHomeScreen> {
     if (idToken == null) {
       throw Exception('Unable to retrieve Firebase ID Token');
     }
-   /* print("JWTToken");
-    print(idToken);
+/*    print("JWTToken");
+    print(idToken);*/
 
-    final apiKey = await fetchApiKey(); // Get the API key
-    print(apiKey);
+    final rawApiKey = await fetchApiKey(); // Get the API key
 
-    if (apiKey == null) {
+    //print(rawApiKey);
+
+    if (rawApiKey == null) {
       print('API key retrieval failed.');
       return;
-    }*/
+    }
+
+    // Parse the JSON to extract only the API key value
+    final apiKeyData = json.decode(rawApiKey); // Decode JSON if needed
+    final apiKey = apiKeyData['APIKey']; // Access the 'apiKey' value
+
+    //print(apiKey); // Should print only the API key value as a string
+
 
     final url = Uri.parse(
-        //'https://eqqd1j4q2j.execute-api.ap-southeast-1.amazonaws.com/dev/permitapi/permit/GetPermit/$userId'
-        'https://d24mqpbjn8370i.cloudfront.net/permitapi/permit/GetPermit/$userId'
+        'https://eqqd1j4q2j.execute-api.ap-southeast-1.amazonaws.com/dev/permitapi/permit/GetPermit/$userId'
+        //'https://d24mqpbjn8370i.cloudfront.net/permitapi/permit/GetPermit/$userId'
     );
     try {
-      final response = await http.get(url);
-     /* final response = await http.get(
+      //final response = await http.get(url);
+      final response = await http.get(
         url,
         headers: {
           'x-api-key': apiKey,
-          //'Content-Type': 'application/json',
         },
-      );*/
+      );
 
       if (response.statusCode == 200) {
         final List<dynamic> permitData = json.decode(response.body);

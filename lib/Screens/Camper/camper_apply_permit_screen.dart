@@ -62,6 +62,26 @@ class _CamperApplyPermitScreenState extends State<CamperApplyPermitScreen> {
     }
   }
 
+  Future<String?> fetchApiKey() async {
+    final url = Uri.parse('https://eqqd1j4q2j.execute-api.ap-southeast-1.amazonaws.com/dev/fetchapikey/'); // Your API Gateway URL here
+    try {
+      final response = await http.get(url);
+
+      if (response.statusCode == 200) {
+        // Decode the response body first
+        final decodedBody = json.decode(response.body);
+        // Then access the inner body
+        final innerBody = json.decode(decodedBody['body']);
+        return innerBody['apiKey'];  // Access the actual API key
+      } else {
+        throw Exception('Failed to load API key');
+      }
+    } catch (e) {
+      print('Error fetching API key: $e');
+      return null; // or handle error accordingly
+    }
+  }
+
   // Function to submit permit application
   Future<void> _submitPermitApplication() async {
     if (_selectedLocation == 'No Selection' ||
@@ -95,14 +115,28 @@ class _CamperApplyPermitScreenState extends State<CamperApplyPermitScreen> {
       // Add other necessary fields based on the API
     };
 
-    const url =
-        'https://d24mqpbjn8370i.cloudfront.net/permitapi/permit/createpermit';
+    final rawApiKey = await fetchApiKey(); // Get the API key
+    //print(rawApiKey);
+    if (rawApiKey == null) {
+      print('API key retrieval failed.');
+      return;
+    }
+    // Parse the JSON to extract only the API key value
+    final apiKeyData = json.decode(rawApiKey); // Decode JSON if needed
+    final apiKey = apiKeyData['APIKey']; // Access the 'apiKey' value
+    //print(apiKey); // Should print only the API key value as a string
 
+    const url =
+        //'https://d24mqpbjn8370i.cloudfront.net/permitapi/permit/createpermit';
+        'https://eqqd1j4q2j.execute-api.ap-southeast-1.amazonaws.com/dev/permitapi/permit/createpermit';
     try {
       // Send the POST request
       final response = await http.post(
         Uri.parse(url),
-        headers: {'Content-Type': 'application/json'},
+        headers: {
+          'Content-Type': 'application/json',
+          'x-api-key': apiKey
+        },
         body: jsonEncode(permitData),
       );
 

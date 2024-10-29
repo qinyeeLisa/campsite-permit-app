@@ -23,12 +23,54 @@ class _OwnerHomeScreenState extends State<OwnerHomeScreen> {
     _fetchPermitApplications();
   }
 
+  String? cachedApiKey;
+
+  Future<String?> fetchApiKey() async {
+    final url = Uri.parse('https://eqqd1j4q2j.execute-api.ap-southeast-1.amazonaws.com/dev/fetchapikey/'); // Your API Gateway URL here
+    try {
+      final response = await http.get(url);
+
+      if (response.statusCode == 200) {
+        // Decode the response body first
+        final decodedBody = json.decode(response.body);
+        // Then access the inner body
+        final innerBody = json.decode(decodedBody['body']);
+        return innerBody['apiKey'];  // Access the actual API key
+      } else {
+        throw Exception('Failed to load API key');
+      }
+    } catch (e) {
+      print('Error fetching API key: $e');
+      return null; // or handle error accordingly
+    }
+  }
+
   // Fetch permit applications from API
   Future<void> _fetchPermitApplications() async {
-    final url = 'https://d24mqpbjn8370i.cloudfront.net/permitapi/permit';
+
+    final rawApiKey = await fetchApiKey(); // Get the API key
+    //print(rawApiKey);
+    if (rawApiKey == null) {
+      print('API key retrieval failed.');
+      return;
+    }
+    // Parse the JSON to extract only the API key value
+    final apiKeyData = json.decode(rawApiKey); // Decode JSON if needed
+    final apiKey = apiKeyData['APIKey']; // Access the 'apiKey' value
+    //print(apiKey); // Should print only the API key value as a string
+
+    //final url = 'https://d24mqpbjn8370i.cloudfront.net/permitapi/permit';
+    final url = Uri.parse('https://eqqd1j4q2j.execute-api.ap-southeast-1.amazonaws.com/dev/permitapi/permit');
 
     try {
-      final response = await http.get(Uri.parse(url));
+      //final response = await http.get(Uri.parse(url));
+      final response = await http.get(
+          url,
+          headers: {
+            'x-api-key': apiKey
+          },
+      );
+
       if (response.statusCode == 200) {
         final data = jsonDecode(response.body) as List<dynamic>;
         setState(() {
@@ -62,7 +104,20 @@ class _OwnerHomeScreenState extends State<OwnerHomeScreen> {
 
   // Approve permit application
   Future<void> _approveApplication(String permitId, String userId) async {
-    final url = 'https://d24mqpbjn8370i.cloudfront.net/approveapi/approve/';
+
+    final rawApiKey = await fetchApiKey(); // Get the API key
+    //print(rawApiKey);
+    if (rawApiKey == null) {
+      print('API key retrieval failed.');
+      return;
+    }
+    // Parse the JSON to extract only the API key value
+    final apiKeyData = json.decode(rawApiKey); // Decode JSON if needed
+    final apiKey = apiKeyData['APIKey']; // Access the 'apiKey' value
+    //print(apiKey); // Should print only the API key value as a string
+
+    //final url = 'https://d24mqpbjn8370i.cloudfront.net/approveapi/approve/';
+    final url = 'https://eqqd1j4q2j.execute-api.ap-southeast-1.amazonaws.com/dev/approveapi/approve/';
     final user = await Provider.of<UserProvider>(context, listen: false).getUser();
     //int userId = user?.userId ?? 0;
 
@@ -77,7 +132,10 @@ class _OwnerHomeScreenState extends State<OwnerHomeScreen> {
       // Send POST request with the permitInfo as JSON
       final response = await http.post(
         Uri.parse(url),
-        headers: {'Content-Type': 'application/json'},
+        headers: {
+          'Content-Type': 'application/json',
+          'x-api-key': apiKey
+        },
         body: jsonEncode(permitInfo),
       );
 
@@ -102,9 +160,20 @@ class _OwnerHomeScreenState extends State<OwnerHomeScreen> {
 
 // Reject permit application
   Future<void> _rejectApplication(String permitId, String userId) async {
-    final url =
-        'https://d24mqpbjn8370i.cloudfront.net/approveapi/approve/rejectpermit';
 
+    final rawApiKey = await fetchApiKey(); // Get the API key
+    //print(rawApiKey);
+    if (rawApiKey == null) {
+      print('API key retrieval failed.');
+      return;
+    }
+    // Parse the JSON to extract only the API key value
+    final apiKeyData = json.decode(rawApiKey); // Decode JSON if needed
+    final apiKey = apiKeyData['APIKey']; // Access the 'apiKey' value
+    //print(apiKey); // Should print only the API key value as a string
+
+    //final url = 'https://d24mqpbjn8370i.cloudfront.net/approveapi/approve/rejectpermit';
+    final url = 'https://eqqd1j4q2j.execute-api.ap-southeast-1.amazonaws.com/dev/approveapi/approve/rejectpermit';
     final user = Provider.of<UserProvider>(context, listen: false).user;
 
     try {
@@ -118,7 +187,11 @@ class _OwnerHomeScreenState extends State<OwnerHomeScreen> {
       // Send POST request with the permitInfo as JSON
       final response = await http.post(
         Uri.parse(url),
-        headers: {'Content-Type': 'application/json'},
+        headers: {
+          'Content-Type': 'application/json',
+          'x-api-key': apiKey
+
+        },
         body: jsonEncode(permitInfo),
       );
 
