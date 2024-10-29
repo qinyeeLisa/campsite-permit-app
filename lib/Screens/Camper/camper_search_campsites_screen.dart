@@ -29,12 +29,11 @@ class _CamperSearchCampsitesScreenState
       final response = await http.get(url);
 
       if (response.statusCode == 200) {
-        // Decode the response body and directly access the API key
+        // Decode the response body first
         final decodedBody = json.decode(response.body);
-        return decodedBody['apiKey']; // This should be the direct API key value
         // Then access the inner body
-        //final innerBody = json.decode(decodedBody['body']);
-        //return innerBody['apiKey'];  // Access the actual API key
+        final innerBody = json.decode(decodedBody['body']);
+        return innerBody['apiKey'];  // Access the actual API key
       } else {
         throw Exception('Failed to load API key');
       }
@@ -46,13 +45,20 @@ class _CamperSearchCampsitesScreenState
 
   Future<void> fetchCampsites() async {
 
-    final apiKey = await fetchApiKey(); // Get the API key
-    print(apiKey);
+    final rawApiKey = await fetchApiKey(); // Get the API key
 
-    if (apiKey == null) {
+    print(rawApiKey);
+
+    if (rawApiKey == null) {
       print('API key retrieval failed.');
       return;
     }
+
+    // Parse the JSON to extract only the API key value
+    final apiKeyData = json.decode(rawApiKey); // Decode JSON if needed
+    final apiKey = apiKeyData['apiKey']; // Access the 'apiKey' value
+
+    print(apiKey); // Should print only the API key value as a string
 
     final url = Uri.parse(
         //'https://00xjqmjhij.execute-api.ap-southeast-1.amazonaws.com/dev2/campsitesapi/campsites/'
