@@ -45,29 +45,29 @@ class _CamperSearchCampsitesScreenState
 
   Future<void> fetchCampsites() async {
 
-   /* final apiKey = await fetchApiKey(); // Get the API key
+    final apiKey = await fetchApiKey(); // Get the API key
     print(apiKey);
 
     if (apiKey == null) {
       print('API key retrieval failed.');
       return;
-    }*/
+    }
 
     final url = Uri.parse(
         //'https://00xjqmjhij.execute-api.ap-southeast-1.amazonaws.com/dev2/campsitesapi/campsites/'
-         'https://d24mqpbjn8370i.cloudfront.net/campsitesapi/campsites/'
-         //'https://eqqd1j4q2j.execute-api.ap-southeast-1.amazonaws.com/dev/campsitesapi/campsites/'
+         //'https://d24mqpbjn8370i.cloudfront.net/campsitesapi/campsites/'
+         'https://eqqd1j4q2j.execute-api.ap-southeast-1.amazonaws.com/dev/campsitesapi/campsites/'
         );
     try {
-      final response = await http.get(url);
-    /*  final response = await http.get(
+      //final response = await http.get(url);
+      final response = await http.get(
         url,
         headers: {
           'x-api-key': apiKey, // Include the API key in the headers
           //'Access-Control-Allow-Origin': '*'
 
         },
-      );*/
+      );
 
       if (response.statusCode == 200) {
         final List<dynamic> campsiteData = json.decode(response.body);
