@@ -29,11 +29,12 @@ class _CamperSearchCampsitesScreenState
       final response = await http.get(url);
 
       if (response.statusCode == 200) {
-        // Decode the response body first
+        // Decode the response body and directly access the API key
         final decodedBody = json.decode(response.body);
+        return decodedBody['apiKey']; // This should be the direct API key value
         // Then access the inner body
-        final innerBody = json.decode(decodedBody['body']);
-        return innerBody['apiKey'];  // Access the actual API key
+        //final innerBody = json.decode(decodedBody['body']);
+        //return innerBody['apiKey'];  // Access the actual API key
       } else {
         throw Exception('Failed to load API key');
       }
