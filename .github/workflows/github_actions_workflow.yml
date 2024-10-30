@@ -23,14 +23,8 @@ jobs:
           distribution: 'temurin'
           java-version: '17'
 
-      - name: Check for jq
-        run: |
-          if command -v jq &> /dev/null; then
-            echo "jq is installed, version: $(jq --version)"
-          else
-            echo "jq is not installed."
-            exit 1  # Exit with an error if jq is not available
-          fi
+      - name: Install jq
+        run: sudo apt-get install -y jq
 
       - name: SonarCloud Scan (Docker)
         run: |
@@ -48,13 +42,14 @@ jobs:
         id: check_quality_gate
         run: |
           # Fetch the quality gate status
-          RESPONSE=$(curl -s -X GET -H "Authorization: Basic $(echo -n ":${{ secrets.SONAR_TOKEN }}" | base64)" "https://sonarcloud.io/api/qualitygates/project_status?projectKey=qinyeeLisa_campsite-permit-app")
-          # Check the quality gate status
-          echo "SonarCloud response: $RESPONSE"  # Print response for debugging
-          STATUS=$(echo "$RESPONSE" | jq -r '.projectStatus.status')  # Extract status using jq
+          RESPONSE=$(curl -s -X GET -H "Authorization: token ${{ secrets.SONAR_TOKEN }}" "https://sonarcloud.io/api/qualitygates/project_status?projectKey=qinyeeLisa_campsite-permit-app")
+          # Print response for debugging
+          echo "SonarCloud response: $RESPONSE"
+
+          # Extract and check the quality gate status
+          STATUS=$(echo "$RESPONSE" | jq -r '.projectStatus.status')
           echo "Quality Gate Status: $STATUS"
 
-          # Check for detailed conditions on quality gate status
           if [ "$STATUS" == "ERROR" ] || [ "$STATUS" == "WARN" ]; then
             echo "SonarCloud quality gate failed."
             echo "quality_gate_status=failure" >> $GITHUB_ENV
