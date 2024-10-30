@@ -54,8 +54,8 @@ jobs:
           STATUS=$(echo "$RESPONSE" | jq -r '.projectStatus.status')  # Extract status using jq
           echo "Quality Gate Status: $STATUS"
 
-          # Fail the job if quality gate status is ERROR
-          if [ "$STATUS" == "ERROR" ]; then
+          # Check for detailed conditions on quality gate status
+          if [ "$STATUS" == "ERROR" ] || [ "$STATUS" == "WARN" ]; then
             echo "SonarCloud quality gate failed."
             echo "quality_gate_status=failure" >> $GITHUB_ENV
             exit 1
