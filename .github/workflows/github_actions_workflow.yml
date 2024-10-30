@@ -51,8 +51,7 @@ jobs:
         uses: actions/github-script@v6
         with:
           script: |
-            const conclusion = 'success';
-          #const conclusion = (core.getInput('quality_gate') === '0') ? 'success' : 'failure';
+            const conclusion = 'success';  
             await github.rest.repos.createCommitStatus({
               owner: context.repo.owner,
               repo: context.repo.repo,
