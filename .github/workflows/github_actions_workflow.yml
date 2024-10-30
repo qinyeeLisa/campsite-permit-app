@@ -36,22 +36,24 @@ jobs:
             -Dsonar.login=${{ secrets.SONAR_TOKEN }}
 
       - name: Check SonarCloud Quality Gate
-        id: quality_gate
+        id: quality_gate  # Set an ID to reference this step's output
         run: |
           RESPONSE=$(curl -s -X GET -H "Authorization: Basic $(echo -n ":${{ secrets.SONAR_TOKEN }}" | base64)" "https://sonarcloud.io/api/qualitygates/project_status?projectKey=qinyeeLisa_campsite-permit-app")
           if echo "$RESPONSE" | grep -q '"status":"ERROR"'; then
             echo "SonarCloud quality gate failed."
-            exit 1  # Fail the job if quality gate fails
+            echo "quality_gate_status=failure" >> $GITHUB_ENV
+            exit 1
           else
             echo "SonarCloud quality gate passed."
+            echo "quality_gate_status=success" >> $GITHUB_ENV
           fi
 
       - name: Set commit status to success or failure
-        if: always()  # This step should run even if previous steps fail
+        if: always()  # Runs regardless of previous step's outcome
         uses: actions/github-script@v6
         with:
           script: |
-            const conclusion = (core.getInput('quality_gate') === '0') ? 'success' : 'failure';  
+            const conclusion = process.env.quality_gate_status === 'success' ? 'success' : 'failure';
             await github.rest.repos.createCommitStatus({
               owner: context.repo.owner,
               repo: context.repo.repo,
