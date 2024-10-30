@@ -23,6 +23,15 @@ jobs:
           distribution: 'temurin'
           java-version: '17'
 
+      - name: Check for jq
+        run: |
+          if command -v jq &> /dev/null; then
+            echo "jq is installed, version: $(jq --version)"
+          else
+            echo "jq is not installed."
+            exit 1  # Exit with an error if jq is not available
+          fi
+
       - name: SonarCloud Scan (Docker)
         run: |
           docker run \
