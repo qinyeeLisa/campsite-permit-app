@@ -35,33 +35,21 @@ jobs:
             -Dsonar.host.url=https://sonarcloud.io \
             -Dsonar.login=${{ secrets.SONAR_TOKEN }}
 
-      - name: Wait for SonarCloud Quality Gate Update
-        run: sleep 10  # Waits for 10 seconds to allow SonarCloud to process the results
-
       - name: Check SonarCloud Quality Gate
-        id: quality_gate  # Set an ID to reference this step's output
         run: |
-          RESPONSE=$(curl -s -X GET -H "Authorization: Basic $(echo -n ":${{ secrets.SONAR_TOKEN }}" | base64)" "https://sonarcloud.io/api/qualitygates/project_status?projectKey=qinyeeLisa_campsite-permit-app")
-          echo "SonarCloud response: $RESPONSE"  # Print the response for debugging
-          
-          # Parse the quality gate status using jq
-          STATUS=$(echo "$RESPONSE" | jq -r '.projectStatus.status')
-          
-          if [ "$STATUS" = "ERROR" ]; then
+          # Assuming you have set up SonarCloud API token in secrets
+          RESPONSE=$(curl -s -X GET -H "Authorization: Basic ${{ secrets.SONAR_TOKEN }}" "https://sonarcloud.io/api/qualitygates/project_status?projectKey=qinyeeLisa_campsite-permit-app")
+          # Check if the quality gate status is "ERROR" or if there are critical/blocker issues
+          if echo "$RESPONSE" | grep -q '"status":"ERROR"'; then
             echo "SonarCloud quality gate failed."
-            echo "quality_gate_status=failure" >> $GITHUB_ENV
-            exit 1  # Fail the job if quality gate fails
-          else
-            echo "SonarCloud quality gate passed."
-            echo "quality_gate_status=success" >> $GITHUB_ENV
+            exit 1  # Fail the job
           fi
 
       - name: Set commit status to success or failure
-        if: always()  # Runs regardless of previous step's outcome
         uses: actions/github-script@v6
         with:
           script: |
-            const conclusion = process.env.quality_gate_status === 'success' ? 'success' : 'failure';
+            const conclusion = '${{ job.status }}' === 'success' ? 'success' : 'failure';
             await github.rest.repos.createCommitStatus({
               owner: context.repo.owner,
               repo: context.repo.repo,
