@@ -129,7 +129,7 @@ class _CamperHomeScreenState extends State<CamperHomeScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Camper Dashboard Test'),
+        title: const Text('Camper Dashboard'),
         actions: <Widget>[
           IconButton(
             icon: const Icon(Icons.logout),
