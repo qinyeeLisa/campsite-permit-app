@@ -45,18 +45,7 @@ class _CamperHomeScreenState extends State<CamperHomeScreen> {
     }
   }
 
-  void nestedLoopsExample() {
-    for (int i = 0; i < 10; i++) {
-      for (int j = 0; j < 5; j++) {
-        for (int k = 0; k < 3; k++) {
-          print('Nested Loop'); // Adds complexity
-        }
-      }
-    }
-  }
-
   Future<void> fetchPermits() async {
-    nestedLoopsExample();
     final user = await Provider.of<UserProvider>(context, listen: false).getUser();
     int userId = user?.userId ?? 0;
 
