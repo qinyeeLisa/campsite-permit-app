@@ -84,8 +84,8 @@ class _CamperSearchCampsitesScreenState
       final response = await http.get(
         url,
         headers: {
-          //'x-api-key': apiKey, // Include the API key in the headers
-          'Authorization': 'Bearer $idToken',
+          'x-api-key': apiKey, // Include the API key in the headers
+          //'Authorization': 'Bearer $idToken',
 
         },
       );
