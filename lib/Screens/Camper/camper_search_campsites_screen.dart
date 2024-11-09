@@ -45,6 +45,20 @@ class _CamperSearchCampsitesScreenState
 
   Future<void> fetchCampsites() async {
 
+    // Get Firebase JWT token
+    final firebaseUser = FirebaseAuth.instance.currentUser;
+    final idToken = await firebaseUser?.getIdToken();
+
+    if (firebaseUser == null) {
+      throw Exception('User is not authenticated');
+    }
+
+    if (idToken == null) {
+      throw Exception('Unable to retrieve Firebase ID Token');
+    }
+    print("JWTToken");
+    print(idToken);
+
     final rawApiKey = await fetchApiKey(); // Get the API key
 
     //print(rawApiKey);
@@ -70,8 +84,8 @@ class _CamperSearchCampsitesScreenState
       final response = await http.get(
         url,
         headers: {
-          'x-api-key': apiKey, // Include the API key in the headers
-
+          //'x-api-key': apiKey, // Include the API key in the headers
+          'Authorization': 'Bearer $idToken',
 
         },
       );
